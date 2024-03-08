@@ -4,35 +4,22 @@ import os
 from .result import ResultSuite
 
 class AutomationManager :
-    __files = None
-    __argvs = None
-    __filename = None
-    __path = None
-    __abs_filepath = None
+    __file_paths = None
 
     def __init__(self) -> None:
         self.flush()
         self.__verbosity = 1
 
     def flush(self):
-        self.__abs_filepath = None
-        self.__filename = None
-        self.__path = None
-        self.__files = []
-        self.__argvs = []
+        self.__file_paths = []
 
         return self
     
     def add_file(self, file_path, argv=None):
-        self.__abs_filepath = file_path
-        self.__filename = os.path.basename(file_path)
-        self.__path = os.path.dirname(file_path)
-        self.__files.append({
-            "path": self.__path,
-            "filename":  self.__filename,
-            "filepath": self.__abs_filepath
-        })
-        self.__argvs.append(argv)
+        self.__file_paths.append(_FilePaths(
+            path=file_path,
+            argv=argv
+        ))
 
         return self
 
@@ -61,13 +48,15 @@ class AutomationManager :
 
         return comments
     
-    def list_test_functions(self):
-        with open(self.__abs_filepath, 'r') as file:
+    def get_functions(self, file_path):
+        with open(file_path, 'r') as file:
             source = file.read()
 
         comments = self.__get_comments(source=source)
 
-        discover = unittest.defaultTestLoader.discover(self.__path, pattern=self.__filename)
+        filename = os.path.basename(file.path)
+        path = os.path.dirname(file.path)
+        discover = unittest.defaultTestLoader.discover(path, pattern=filename, top_level_dir=path)
 
         test_suites = unittest.TestSuite(discover)
 
@@ -85,53 +74,45 @@ class AutomationManager :
     def run(self):
         
         test_count = 0
+        is_success = True
+        errors = []
+        failures = []
+        skipped = []
 
-        for i, file in enumerate(self.__files):
-            print(i) 
+        for file in self.__file_paths:
+            test_result = None
+            if file.argv is None:
+                
+                filename = os.path.basename(file.path)
+                path = os.path.dirname(file.path)
+                discover = unittest.defaultTestLoader.discover(path, pattern=filename, top_level_dir=path) # rewrite top_level_dir tiap load file
+                test_result = unittest.TextTestRunner(verbosity=self.__verbosity).run(discover)
+            else:
+                test_result = self.__with_argv(file_path=file.path, argv=file.argv)
 
+            test_count += test_result.testsRun
+            if test_result.wasSuccessful() is False:
+                is_success = False
+            errors += test_result.errors
+            failures += test_result.failures
+            skipped += test_result.skipped
 
-
-
-
-        result_suite = ResultSuite(
+        return ResultSuite(
             count=test_count,
-            success=test_result.wasSuccessful(),
-            errors=test_result.errors,
-            failures=test_result.failures,
-            skipped=test_result.skipped
+            success=is_success,
+            errors=errors,
+            failures=failures,
+            skipped=skipped
         )
 
-        return result_suite
-
-
-
-        test_result = None
-        if len(argv) != 0: 
-            test_result = self.__with_argv(argv)
-        else:
-            discover = unittest.defaultTestLoader.discover(self.__path, pattern=self.__filename)
-            test_result = unittest.TextTestRunner(verbosity=self.__verbosity).run(discover)
-        
-        self.flush()
-
-        result_suite = ResultSuite(
-            count=test_result.testsRun,
-            success=test_result.wasSuccessful(),
-            errors=test_result.errors,
-            failures=test_result.failures,
-            skipped=test_result.skipped
-        )
-
-        return result_suite
-
-    def __with_argv(self, argv):
+    def __with_argv(self, file_path, argv):
         import sys
         import importlib.util
         from pathlib import Path
 
-        sys.path.append(self.__path)
-
-        test_module_name = Path(self.__abs_filepath).stem
+        path = os.path.dirname(file_path)
+        sys.path.append(path)
+        test_module_name = Path(file_path).stem
         test_module = importlib.import_module(test_module_name)
         test_runner = unittest.TextTestRunner(verbosity=self.__verbosity)
 
@@ -142,5 +123,7 @@ class AutomationManager :
 
         return test_result
 
-
-# run testsuite
+class _FilePaths:
+    def __init__(self, path=None, argv=None):
+        self.path = path
+        self.argv = argv
