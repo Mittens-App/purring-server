@@ -16,7 +16,8 @@ automator = manager.AutomationManager()
 path2 = "D:/rizal/projects/purring-test/my/my/purring/test4_basic_headless2.py"
 path3 = "D:/rizal/projects/mittens/purring_server/test/basic_test.py"
 path4 = "C:/Users/USER/Documents/run_thisxy.py"
-testclass = automator.get_functions(file_path=path2)
+path5 = "D:/rizal/projects/mittens/purring_server/src/library/automation/result.py"
+testclass = automator.get_functions(file_path=path5)
 print("classname:", testclass.classname)
 print("path:", testclass.path)
 for func in testclass.functions:
@@ -32,7 +33,7 @@ for func in testclass.functions:
 
 
 
-# ============= set single file ============
+# ============= multi file ============
 ## example 1
 # automator.add_file(path2).add_file(path3).add_file(path2)
 
