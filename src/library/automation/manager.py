@@ -65,8 +65,8 @@ class AutomationManager :
 
         functions = []
         classname = None
-        for tase_case in test_cases:
-            for case in tase_case: 
+        for test_case in test_cases:
+            for case in test_case: 
                 classname = case.__class__.__name__
                 defName = case._testMethodName
                 functions.append(_Function(name=defName, comment=comments[defName]))
