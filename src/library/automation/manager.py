@@ -54,8 +54,8 @@ class AutomationManager :
 
         comments = self.__get_comments(source=source)
 
-        filename = os.path.basename(file.path)
-        path = os.path.dirname(file.path)
+        filename = os.path.basename(file_path)
+        path = os.path.dirname(file_path)
         discover = unittest.defaultTestLoader.discover(path, pattern=filename, top_level_dir=path)
 
         test_suites = unittest.TestSuite(discover)
@@ -63,13 +63,19 @@ class AutomationManager :
         # check test_suites length. throws not found exception
         test_cases = test_suites._tests[0]
 
-        test_functions = []
+        functions = []
+        classname = None
         for tase_case in test_cases:
             for case in tase_case: 
+                classname = case.__class__.__name__
                 defName = case._testMethodName
-                test_functions.append((defName,comments[defName]))
+                functions.append(_Function(name=defName, comment=comments[defName]))
 
-        return test_functions
+        return _TestClass(
+            classname=classname,
+            path=file_path,
+            functions=functions
+        )
 
     def run(self):
         
@@ -127,3 +133,14 @@ class _FilePaths:
     def __init__(self, path=None, argv=None):
         self.path = path
         self.argv = argv
+
+class _Function:
+    def __init__(self, name=None, comment=None):
+        self.name = name
+        self.comment = comment
+
+class _TestClass:
+    def __init__(self, classname=None, path=None, functions=[]):
+        self.classname = classname
+        self.path = path
+        self.functions = functions
