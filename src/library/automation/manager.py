@@ -79,10 +79,12 @@ class AutomationManager :
             functions=functions
         )
 
-    def run(self, use_worker=True, worker_pool=3):
+    def run(self, use_worker=True, worker_pool=5):
 
         if len(self.__file_paths) <= 1 or use_worker is False:
-            return self.__run_suite(list=self.__file_paths)
+            result = self.__run_suite(list=self.__file_paths)
+            self.flush()
+            return result
         else:
             print("use worker") # need logger gaes
 
@@ -113,6 +115,8 @@ class AutomationManager :
             endtime = datetime.now()
             diff = endtime - starttime
             total_duration = diff.total_seconds()
+
+            self.flush()
             return ResultSuite(
                 success=is_success,
                 count=total_test,
@@ -132,15 +136,15 @@ class AutomationManager :
             test_result = None
             starttime = datetime.now()
 
-            if file.argv is None:
-                filename = os.path.basename(file.path)
-                path = os.path.dirname(file.path)
-                # bug multi thread
-                discover = unittest.defaultTestLoader.discover(path, pattern=filename, top_level_dir=path) # rewrite top_level_dir tiap load file
-                test_result = unittest.TextTestRunner(verbosity=self.__verbosity).run(discover)
+            # if file.argv is None:
+            #     filename = os.path.basename(file.path)
+            #     path = os.path.dirname(file.path)
+            #     # bug multi thread
+            #     discover = unittest.defaultTestLoader.discover(path, pattern=filename, top_level_dir=path) # rewrite top_level_dir tiap load file
+            #     test_result = unittest.TextTestRunner(verbosity=self.__verbosity).run(discover)
                 
-            else:
-                test_result = self.__with_argv(file_path=file.path, argv=file.argv)
+            # else:
+            test_result = self.__with_argv(file_path=file.path, argv=file.argv)
 
             case_classname = test_result._previousTestClass.__name__
             case_test_count = test_result.testsRun
