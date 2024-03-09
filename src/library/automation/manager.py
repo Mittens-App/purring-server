@@ -1,7 +1,9 @@
 import ast
 import unittest
 import os
-from .result import ResultSuite
+from datetime import datetime
+from .result import ResultSuite, ResultCase
+import concurrent.futures
 
 class AutomationManager :
     __file_paths = None
@@ -77,38 +79,100 @@ class AutomationManager :
             functions=functions
         )
 
-    def run(self):
-        
-        test_count = 0
-        is_success = True
-        errors = []
-        failures = []
-        skipped = []
+    def run(self, use_worker=True, worker_pool=3):
 
-        for file in self.__file_paths:
+        if len(self.__file_paths) <= 1 or use_worker is False:
+            return self.__run_suite(list=self.__file_paths)
+        else:
+            print("use worker") # need logger gaes
+
+            total_test = 0
+            total_fail = 0
+            total_duration = 0
+            is_success = True
+            all_resultcase = []
+            list_result=[]
+            starttime = datetime.now()
+
+            # Create a ThreadPoolExecutor
+            with concurrent.futures.ThreadPoolExecutor(max_workers=worker_pool) as executor:
+                future_results = [executor.submit(self.__run_suite, [s]) for s in self.__file_paths]
+
+                for future in concurrent.futures.as_completed(future_results):
+                    list_result.append(future.result())
+
+            # thread joined
+            for result in list_result:
+                total_test += result.test_count()
+                total_fail += result.fail_count()
+                total_duration += result.duration()
+                all_resultcase += result.resultcase()
+                if result.is_success() is False:
+                    is_success = False
+    
+            endtime = datetime.now()
+            diff = endtime - starttime
+            total_duration = diff.total_seconds()
+            return ResultSuite(
+                success=is_success,
+                count=total_test,
+                fail_count=total_fail,
+                duration=total_duration,
+                resultcase=all_resultcase
+            )
+
+    def __run_suite(self, list=[]):
+        total_test = 0
+        total_fail = 0
+        total_duration = 0
+        is_success = True
+        all_resultcase = []
+    
+        for file in list:
             test_result = None
+            starttime = datetime.now()
+
             if file.argv is None:
-                
                 filename = os.path.basename(file.path)
                 path = os.path.dirname(file.path)
+                # bug multi thread
                 discover = unittest.defaultTestLoader.discover(path, pattern=filename, top_level_dir=path) # rewrite top_level_dir tiap load file
                 test_result = unittest.TextTestRunner(verbosity=self.__verbosity).run(discover)
+                
             else:
                 test_result = self.__with_argv(file_path=file.path, argv=file.argv)
 
-            test_count += test_result.testsRun
-            if test_result.wasSuccessful() is False:
+            case_classname = test_result._previousTestClass.__name__
+            case_test_count = test_result.testsRun
+            endtime = datetime.now()
+            diff = endtime - starttime
+            case_duration = diff.total_seconds()
+            case_status = test_result.wasSuccessful()
+
+            result_case = ResultCase(
+                classname=case_classname,
+                duration=case_duration,
+                file_path=file.path,
+                test_count=case_test_count,
+                success=case_status,
+                errors=test_result.errors,
+                failures=test_result.failures,
+                skipped=test_result.skipped,
+            )
+
+            total_duration += case_duration
+            total_test += case_test_count
+            total_fail += len(result_case.fails())
+            if case_status is False:
                 is_success = False
-            errors += test_result.errors
-            failures += test_result.failures
-            skipped += test_result.skipped
+            all_resultcase.append(result_case)
 
         return ResultSuite(
-            count=test_count,
             success=is_success,
-            errors=errors,
-            failures=failures,
-            skipped=skipped
+            count=total_test,
+            fail_count=total_fail,
+            duration=total_duration,
+            resultcase=all_resultcase
         )
 
     def __with_argv(self, file_path, argv):
