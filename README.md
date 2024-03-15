@@ -7,9 +7,6 @@ Use cases include (we have tested):
 - Moblie automation test ([Appium](http://appium.io/docs/en/latest/))
 - Api test
 
-- [Documentation](#documentation)
-- [Issues & Problems](#issues-problems)
-
 ## Documentation
 
 Visit [Docs](https://app.gitbook.com/o/2iTb7XChU43pLM0mPhc2/s/6dwBQfpyBu3wfsMnKNzO/) for the full documentation.
