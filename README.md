@@ -1,6 +1,6 @@
 # purring_server
  
-Purring_server is a service management test tools for Python unittest codes. so basically, it runs all your automate python code as long as uses unittest library.
+Purring_server is a service management test tools for Python unittest codes. So basically, it runs all your automate python code as long as uses unittest library.
 
 Use cases include (we have tested):
 - Web automation test ([Selenium](https://selenium-python.readthedocs.io/))
