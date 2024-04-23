@@ -2,7 +2,7 @@ import ast
 import unittest
 import os
 from datetime import datetime
-from .result import ResultSuite, ResultCase
+from v1.models.result_suite import ResultSuite, ResultCase
 import concurrent.futures
 
 class AutomationManager :
