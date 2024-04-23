@@ -1,0 +1,13 @@
+env: DEVELOPMENT
+db:
+  username: ''
+  password: ''
+  database: ''
+  host: ''
+  port: 0
+  dialect: mysql
+  debug: true
+secret: ''
+grpc:
+  host: ''
+  port: 0

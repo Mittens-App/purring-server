@@ -1,0 +1,12 @@
+# run via python -m pip install -r requirements.txt
+grpcio>=1.62.2
+grpcio-tools>=1.62.2
+grpcio-reflection>=1.62.2
+grpcio-status>=1.62.2
+grpc-interceptor>=0.15.4
+fastapi[all]>=0.110.2
+PyJWT>=2.8.0
+pyyaml>=6.0.1
+mysqlclient>=2.2.4
+SQLAlchemy>=2.0.29
+uvicorn>=0.29.0
