@@ -11,20 +11,19 @@ class UserRepository:
     ) -> None:
         self.db = db
 
+    def commit(self):
+        self.db.commit()
+
     def create(self, user: User):
         self.db.add(user)
-        self.db.commit()
-        self.db.refresh(user)
-        return ''
     
-    def get(self, username) -> User:
-        return self.db.get(
-            User, {
-                User.username.name, username
-            }
-        )
+    def get_by_name(self, username) -> User:
+        return self.db.query(User).all()
+    
+    def get(self, user: User):
+        return self.db.query(User).where(User.username==user.username, User.password==user.password).first()
     
     def delete(self, id):
-        user = self.db.session.get(User, id)
+        user = self.db.query(User, id)
         self.db.delete(user)
         self.db.commit()
