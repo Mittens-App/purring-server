@@ -18,12 +18,10 @@ class UserRepository:
         self.db.add(user)
     
     def get_by_name(self, username) -> User:
-        return self.db.query(User).all()
+        return self.db.query(User).where(User.username==username).first()
     
     def get(self, user: User):
         return self.db.query(User).where(User.username==user.username, User.password==user.password).first()
     
-    def delete(self, id):
-        user = self.db.query(User, id)
-        self.db.delete(user)
-        self.db.commit()
+    def delete_by_name(self, username):
+        return self.db.query(User).where(User.username==username).delete()

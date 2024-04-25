@@ -32,8 +32,14 @@ class UserService:
         return result
 
     def delete(self, username):
-        user = self.userRepo.get_by_name(username=username)
-        print(user)
+        result = 0
+        try:
+            result = self.userRepo.delete_by_name(username)
+            self.userRepo.commit()
+        except SQLAlchemyError as e:
+            error = str(e.__dict__['orig'])
+
+        return result
     
     def exist(self, username, password):
         user = User()
