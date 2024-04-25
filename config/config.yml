@@ -5,9 +5,13 @@ db:
   database: ''
   host: ''
   port: 0
-  dialect: mysql
+  dialect: sqlite
   debug: true
 secret: ''
 grpc:
   host: ''
   port: 0
+http:
+  host: ''
+  port: 0
+  worker: 0
