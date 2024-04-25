@@ -2,17 +2,14 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from config.loader import config_load
-from src.v1.models import *
 
 # Runtime Environment Configuration
 cfg = config_load()
 
 # Generate Database URL
 DATABASE_URL = f"{cfg['db']['dialect']}://{cfg['db']['username']}:{cfg['db']['password']}@{cfg['db']['host']}:{cfg['db']['port']}/{cfg['db']['database']}"
-print(DATABASE_URL)
-# DATABASE_URL = "sqlite:///./sql_app.db"
-# DATABASE_URL = "mysql://user:password@postgresserver/db"
-# DATABASE_URL = "postgresql://user:password@postgresserver/db"
+if cfg['db']['dialect'] == "sqlite":
+    DATABASE_URL = "sqlite:///./purring.db"
 
 # Create Database Engine
 Engine = create_engine(

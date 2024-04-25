@@ -122,6 +122,8 @@ venv.bak/
 config.yml
 config/config.yml
 
+purring.db
+
 # Spyder project settings
 .spyderproject
 .spyproject
