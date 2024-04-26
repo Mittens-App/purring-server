@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, DATETIME, Enum, DECIMAL
+from sqlalchemy import Column, Integer, String, Text, DATETIME, Enum, Double
 from config.database import EntityMeta
 import enum
 
@@ -16,7 +16,7 @@ class Result(EntityMeta):
     execute_date = Column(DATETIME, index=True)
     duration = Column(Integer)
     test_status = Column(Enum(StatusEnum))
-    effectiveness = Column(DECIMAL(2,4))
+    effectiveness = Column(Double)
     executor = Column(String(50))
     test_count = Column(Integer)
     success_count = Column(Integer)

@@ -3,17 +3,11 @@ import unittest
 # automate test path
 import os
 
-# print(path)
-# exit()
 print("=====================================================")
-from src.library.automation import manager
-automator = manager.AutomationManager()
+from src.v1.services.manager import AutomationManager
+automator = AutomationManager()
 
 # ============= list function =============
-## change file dirpath2 = "D:/rizal/projects/purring-test/my/my/purring/test4_basic_headless2.py"
-# path3 = "D:/rizal/projects/mittens/purring_server/test/basic_test.py"
-# path4 = "C:/Users/USER/Documents/run_thisxy.py"
-# path5 = "D:/rizal/projects/mittens/purring_server/src/library/automation/result.py"
 
 path1 = os.path.abspath("test/test1.py").replace("\\", "/")
 path2 = os.path.abspath("test/test2.py").replace("\\", "/")

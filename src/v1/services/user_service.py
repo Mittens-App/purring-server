@@ -24,7 +24,7 @@ class UserService:
             self.userRepo.create(user)
             self.userRepo.commit()
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e.__dict__)
             # logging here
             result.body = error
             result.status= http_status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -37,12 +37,12 @@ class UserService:
             result = self.userRepo.delete_by_name(username)
             self.userRepo.commit()
         except SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e.__dict__)
 
         return result
     
     def exist(self, username, password):
         user = User()
-        user.password = password
+        user.password = sha256(password.encode()).hexdigest()
         user.username = username
         return self.userRepo.get(user) is not None

@@ -1,8 +1,10 @@
-from fastapi import APIRouter, status, Depends, Response
+from fastapi import APIRouter, status, Depends, Response, BackgroundTasks
 from pydantic import BaseModel
 from typing import Annotated
 from src.v1.gateways.http_auth import basic_auth, api_key_auth
 from src.v1.services.user_service import UserService
+from src.v1.services.testcase_service import TestcaseService
+import time
 
 AppRoute = APIRouter(prefix="/v1", )
 
@@ -24,7 +26,9 @@ def delete_user(username: str, response: Response, credentials = Depends(api_key
     response.status_code = status.HTTP_204_NO_CONTENT
     return None
 
+import asyncio
 @AppRoute.post("/testcase/{id}")
-def run_testcase(id: int, response: Response, credentials: Annotated[str, Depends(basic_auth)], userService: UserService = Depends()):
-    response.status_code = status.HTTP_204_NO_CONTENT
-    return "", status.HTTP_201_CREATED
+def run_testcase(id: int, response: Response, credentials = Depends(basic_auth), testcaseService: TestcaseService = Depends()):
+    result = testcaseService.run(id, credentials.username)
+    response.status_code = result.status
+    return result.body

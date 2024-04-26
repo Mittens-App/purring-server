@@ -5,6 +5,7 @@ import enum
 class ResultEnum(enum.Enum):
     success = "success"
     failed = "failed"
+    empty= ""
 
 class TestCase(EntityMeta):
     __tablename__ = "testcase"

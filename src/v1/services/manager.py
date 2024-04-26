@@ -2,8 +2,8 @@ import ast
 import unittest
 import os
 from datetime import datetime
-from v1.models.result_suite import ResultSuite, ResultCase
 import concurrent.futures
+from src.v1.models.result_suite import ResultSuite, ResultCase
 
 class AutomationManager :
     __file_paths = None
