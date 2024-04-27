@@ -3,6 +3,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from datetime import datetime
 from src.v1.repositories.testcase_repository import TestcaseRepository
 from src.v1.repositories.result_repository import ResultRepository
+from src.v1.models.testcase import ResultEnum
 from src.v1.models.result import StatusEnum, Result, ResultTags, ResultMessage
 from src.v1.models.result_suite import ResultCase
 from src.v1.gateways.http_auth import Result as HttpResult
@@ -34,16 +35,18 @@ class TestcaseService:
             body.status = http_status.HTTP_404_NOT_FOUND
             return body
         
+        date = datetime.now()
         result = Result()
         result.description = testcase[0].TestCase.description
         result.duration = 0
-        result.execute_date = datetime.now()
+        result.execute_date = date
         result.effectiveness = 0
         result.executor = executor
         result.name = testcase[0].TestCase.name
         result.success_count= 0
         result.test_count = 0
         result.test_status= StatusEnum.running
+        testcase[0].TestCase.last_execute_date = date
 
         isError = False
         try:
@@ -86,11 +89,12 @@ class TestcaseService:
         result.success_count= result_detail.test_count - len(result_detail.fails())
         result.test_count = result_suite.test_count()
         result.test_status= StatusEnum.success
+        testcase[0].TestCase.last_result = ResultEnum.success
 
-            
         if result_suite.is_success() is False:
             result.test_status= StatusEnum.failed
             body.body = StatusEnum.failed
+            testcase[0].TestCase.last_result = ResultEnum.failed
 
         msgs = []
         for fail in result_detail.fails():
