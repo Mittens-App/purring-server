@@ -1,6 +1,7 @@
 from fastapi import status, Depends, HTTPException
 from fastapi.security import HTTPBasic, HTTPBasicCredentials, APIKeyHeader
 from typing import Annotated
+from config.loader import ApiKey
 
 class Result(object):
     def __init__(self, body, status):
@@ -11,9 +12,8 @@ security = HTTPBasic()
 X_API_KEY = APIKeyHeader(name='X-API-Key')
 
 def api_key_auth(x_api_key: str = Depends(X_API_KEY)):
-    from config.loader import api_key
 
-    if x_api_key != api_key():
+    if x_api_key != ApiKey:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
         )

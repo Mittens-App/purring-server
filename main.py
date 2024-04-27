@@ -1,9 +1,7 @@
 from fastapi import FastAPI
 from src.v1.gateways.http import AppRoute
 from config.database import init_db
-from config.loader import config_load
-
-cfg = config_load()
+from config.loader import ConfigLoad as cfg
 
 app = FastAPI(
     docs_url=None,

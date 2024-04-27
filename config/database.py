@@ -1,10 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
-from config.loader import config_load
-
-# Runtime Environment Configuration
-cfg = config_load()
+from config.loader import ConfigLoad as cfg
 
 # Generate Database URL
 DATABASE_URL = f"{cfg['db']['dialect']}://{cfg['db']['username']}:{cfg['db']['password']}@{cfg['db']['host']}:{cfg['db']['port']}/{cfg['db']['database']}"
