@@ -97,9 +97,11 @@ class TestcaseService:
             testcase[0].TestCase.last_result = ResultEnum.failed
 
         msgs = []
+        separator = 'Stacktrace:'
         for fail in result_detail.fails():
             msg = ResultMessage()
-            msg.message = fail.msg
+            trimmed = fail.msg.split(separator, 1)[0]
+            msg.message = trimmed
             msg.result_id = result.id
             msg.result_method = fail.method
             msg.result_type = fail.type
