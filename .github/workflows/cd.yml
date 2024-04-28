@@ -1,0 +1,25 @@
+name: purring_server CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy Using ssh
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: 22
+          script: |
+            cd ~/mittens/purring_server
+            git checkout .
+            git pull origin main
+            python3 -m pip install -r requirements.txt
+            cp ~/mittens/envs/config.yml ~/mittens/purring_server/config/
+            sudo systemctl restart purring_server.service
