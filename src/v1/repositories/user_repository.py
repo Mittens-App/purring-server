@@ -7,12 +7,15 @@ class UserRepository:
     db: Session
 
     def __init__(
-        self, db: Session = Depends(db_connection)
+        self, db: Session = next(db_connection())
     ) -> None:
         self.db = db
 
     def commit(self):
         self.db.commit()
+
+    def rollback(self):
+        self.db.rollback()
 
     def create(self, user: User):
         self.db.add(user)

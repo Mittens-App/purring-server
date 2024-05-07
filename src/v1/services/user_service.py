@@ -8,8 +8,8 @@ from hashlib import sha256
 class UserService:
     userRepo: UserRepository
     
-    def __init__(self, userRepo: UserRepository = Depends()):
-        self.userRepo = userRepo
+    def __init__(self):
+        self.userRepo = UserRepository()
     
     def create(self, payload):
         user = User()
@@ -25,6 +25,7 @@ class UserService:
             self.userRepo.commit()
         except SQLAlchemyError as e:
             error = str(e.__dict__)
+            self.userRepo.rollback()
             # logging here
             result.body = error
             result.status= http_status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -37,6 +38,7 @@ class UserService:
             result = self.userRepo.delete_by_name(username)
             self.userRepo.commit()
         except SQLAlchemyError as e:
+            self.userRepo.rollback()
             error = str(e.__dict__)
 
         return result

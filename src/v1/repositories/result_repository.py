@@ -7,7 +7,7 @@ class ResultRepository:
     db: Session
 
     def __init__(
-        self, db: Session = Depends(db_connection)
+        self, db: Session = next(db_connection())
     ) -> None:
         self.db = db
 

@@ -14,10 +14,10 @@ class TestcaseService:
     resultRepo: ResultRepository
     manager: AutomationManager
     
-    def __init__(self, testcaseRepo: TestcaseRepository = Depends(), resultRepo: ResultRepository = Depends(), manager: AutomationManager = Depends()):
-        self.testcaseRepo = testcaseRepo
-        self.resultRepo = resultRepo
-        self.manager = manager
+    def __init__(self):
+        self.testcaseRepo = TestcaseRepository()
+        self.resultRepo = ResultRepository()
+        self.manager = AutomationManager()
     
     def get(self, id: int):
         return self.testcaseRepo.get(id)
@@ -66,6 +66,7 @@ class TestcaseService:
             if len(tags) > 0:
                 self.resultRepo.createTags(tags)
         except Exception as e:
+            self.resultRepo.rollback()
             error = str(e.__dict__)
             print(error)
             isError = True
