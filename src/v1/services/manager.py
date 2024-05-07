@@ -4,6 +4,7 @@ import os
 from datetime import datetime
 import concurrent.futures
 from src.v1.models.result_suite import ResultSuite, ResultCase
+from config.loader import ConfigLoad as cfg
 
 class AutomationManager :
     __file_paths = None
@@ -11,6 +12,7 @@ class AutomationManager :
     def __init__(self) -> None:
         self.flush()
         self.__verbosity = 1
+        self.__source_dir = cfg["source"]
 
     def flush(self):
         self.__file_paths = []
@@ -19,7 +21,7 @@ class AutomationManager :
     
     def add_file(self, file_path, argv=None):
         self.__file_paths.append(_FilePaths(
-            path=file_path,
+            path= "/".join([self.__source_dir, file_path]),
             argv=argv
         ))
 
@@ -51,6 +53,8 @@ class AutomationManager :
         return comments
     
     def get_functions(self, file_path):
+        file_path = "/".join([self.__source_dir, file_path])
+        
         with open(file_path, 'r') as file:
             source = file.read()
 

@@ -5,13 +5,14 @@ db:
   database: ''
   host: ''
   port: 0
-  dialect: sqlite
+  dialect: sqlite # sqlite, mysql
   debug: true
 secret: ''
 grpc:
   host: ''
-  port: 0
+  port: 50051
 http:
   host: ''
-  port: 0
-  worker: 0
+  port: 8000
+  worker: 2
+source: '/etc/mittens/automation_tasks'
