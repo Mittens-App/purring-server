@@ -20,8 +20,12 @@ class AutomationManager :
         return self
     
     def add_file(self, file_path, argv=None):
+        path = file_path
+        if self.__source_dir is not False:
+            path = "/".join([self.__source_dir, file_path])
+
         self.__file_paths.append(_FilePaths(
-            path= "/".join([self.__source_dir, file_path]),
+            path= path,
             argv=argv
         ))
 
