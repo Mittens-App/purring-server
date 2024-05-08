@@ -1,4 +1,3 @@
-from fastapi import Depends
 from sqlalchemy.orm import Session, lazyload
 from config.database import db_connection
 from src.v1.models.user import User
@@ -24,7 +23,7 @@ class UserRepository:
         return self.db.query(User).where(User.username==username).first()
     
     def get(self, user: User):
-        return self.db.query(User).where(User.username==user.username, User.password==user.password).first()
+        return self.db.query(User.id, User.username, User.type).where(User.username==user.username, User.password==user.password).first()
     
     def delete_by_name(self, username):
         return self.db.query(User).where(User.username==username).delete()
