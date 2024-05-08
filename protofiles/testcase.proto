@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+package src.v1.testcase; 
+
+// Testcase Service
+service Testcase {
+    // return list of testcases
+    rpc Get(GetRequest) returns (GetResponse) {}
+    // rpc Detail(DetailRequest) returns (DetailResponse) {}
+    rpc Create(CreateRequest) returns (CreateResponse) {}
+    // rpc Update(DetailRequest) returns (DetailResponse) {}
+    // rpc Delete(DetailRequest) returns (DetailResponse) {}
+}
+
+message GetRequest {
+    string filter = 1;
+    string keyword = 2;
+    uint32 limit = 3;
+    uint32 page = 4;
+}
+
+message GetResponse {
+    string status = 1;
+    repeated DataResponse data = 2;
+    MetaDataResponse metadata = 3;
+}
+
+message MetaDataResponse {
+    // current page
+    uint32 current_page = 1;
+    // data per page
+    uint32 per_page = 2;
+    // total rows data
+    uint32 total = 3;
+    // maximum page
+    uint32 last_page = 4;
+}
+
+message DataResponse {
+    uint32 id = 1;
+    string name = 2;
+    string desc = 3;
+    repeated Tag tags = 4;
+    string creator = 5;
+    string last_execute_date = 6;
+    string last_execute_result = 7;
+}
+
+message Tag {
+    string name = 1;
+    string color = 2;
+}
+
+message CreateRequest {
+    string name = 1;
+    string desc = 2;
+    string file = 3;
+    repeated uint32 tag_ids = 4;
+}
+
+message CreateResponse {
+    string status = 1;
+    string message = 2;
+}
