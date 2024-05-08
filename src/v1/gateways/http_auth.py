@@ -3,10 +3,6 @@ from fastapi.security import HTTPBasic, HTTPBasicCredentials, APIKeyHeader
 from typing import Annotated
 from config.loader import ApiKey
 
-class Result(object):
-    def __init__(self, body, status):
-        self.body = body
-        self.status = status
 
 security = HTTPBasic()
 X_API_KEY = APIKeyHeader(name='X-API-Key')
