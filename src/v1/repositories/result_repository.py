@@ -1,4 +1,3 @@
-from fastapi import Depends
 from sqlalchemy.orm import Session, lazyload
 from config.database import db_connection
 from src.v1.models.result import Result, ResultMessage, ResultTags

@@ -1,13 +1,18 @@
 from fastapi import Depends, status as http_status
+from grpc import StatusCode as rpc_status
 from sqlalchemy.exc import SQLAlchemyError
 from datetime import datetime
+import math
+from src.v1.gateways.response import Response
 from src.v1.repositories.testcase_repository import TestcaseRepository
 from src.v1.repositories.result_repository import ResultRepository
 from src.v1.models.testcase import ResultEnum
 from src.v1.models.result import StatusEnum, Result, ResultTags, ResultMessage
 from src.v1.models.result_suite import ResultCase
-from src.v1.gateways.http_auth import Result as HttpResult
+from src.v1.models.testcase import TestCase
+# from src.v1.gateways.http_auth import Result as HttpResult
 from src.v1.services.manager import AutomationManager
+from src.v1.protofiles.testcase_pb2 import GetResponse, MetaDataResponse, DataResponse, Tag
 
 class TestcaseService:
     testcaseRepo: TestcaseRepository
@@ -19,13 +24,62 @@ class TestcaseService:
         self.resultRepo = ResultRepository()
         self.manager = AutomationManager()
     
-    def get(self, id: int):
-        return self.testcaseRepo.get(id)
+    def get(self,filter= None, keyword = None, limit=25, page=1):
+
+        offset = page - 1        
+        if page <= 1:
+            page=1
+            offset = 0
+
+        query_data = self.testcaseRepo.getAll(
+            filter=filter,
+            keyword=keyword,
+            limit=limit,
+            offset=offset
+        )
+        total_count = query_data["total_count"]
+        testcases = query_data["data"]
+        last_page = 1
+        if total_count > 0:
+            last_page = math.ceil(total_count / limit)
+
+        response = GetResponse(
+            metadata=MetaDataResponse(
+                total=total_count,
+                current_page=page,
+                last_page=last_page,
+                per_page=limit
+            )
+        )
+        response.status = str(rpc_status.OK)
+
+        for testcase in testcases:
+            data_response = DataResponse(
+                id=testcase.id,
+                name=testcase.name,
+                desc=testcase.description,
+                creator=testcase.creator,
+                last_execute_date=testcase.last_execute_date,
+                last_execute_result=testcase.last_result,
+            )
+            for case_tag in testcase.testcase_tags:
+                data_response.tags.append(
+                    Tag(
+                        name=case_tag.tag.name,
+                        color=case_tag.tag.color
+                    )
+                )
+            response.data.append(data_response) 
+
+        return Response(
+            status=rpc_status.OK,
+            body=response
+        )
     
     def run(self, id: int, executor: str):
         testcase = self.testcaseRepo.getWithTags(id)
 
-        body = HttpResult(
+        body = Response(
             body=StatusEnum.success,
             status=http_status.HTTP_200_OK
         )
@@ -114,3 +168,6 @@ class TestcaseService:
         self.resultRepo.commit()
         
         return body
+
+    def create(self):
+        pass
