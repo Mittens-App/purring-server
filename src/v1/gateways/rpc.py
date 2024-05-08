@@ -2,7 +2,7 @@ from grpc import ServicerContext
 from src.v1.protofiles.user_pb2 import LoginRequest, LoginResponse
 from src.v1.protofiles.user_pb2_grpc import UserServicer
 from src.v1.services.user_service import UserService
-from src.v1.protofiles.testcase_pb2 import GetRequest as TestcaseGetReq, CreateRequest as TestcaseCreateReq, CreateResponse
+from src.v1.protofiles.testcase_pb2 import GetRequest as TestcaseGetReq, CreateRequest as TestcaseCreateReq
 from src.v1.protofiles.testcase_pb2_grpc import TestcaseServicer
 from src.v1.services.testcase_service import TestcaseService
 from src.v1.protofiles.tag_pb2_grpc import TagServicer
@@ -44,18 +44,11 @@ class Testcase(TestcaseServicer):
 
     def Create(self, request: TestcaseCreateReq, context: ServicerContext):
         result = self.testcaseService.create(
-            name = request.name,
-            desc = request.desc,
-            file = request.file,
-            tag_ids = request.tag_ids,
-            creator = context.myToken["username"]
+            payload = request, creator = context.myToken["username"]
         )
         
-        # context.set_code(result.status)
-        return CreateResponse(
-            message="",
-            status=""
-        )
+        context.set_code(result.status)
+        return result.body
 
     def Get(self, request: TestcaseGetReq, context: ServicerContext):
         result = self.testcaseService.get(
