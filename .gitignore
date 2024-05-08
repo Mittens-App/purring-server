@@ -123,6 +123,7 @@ config.yml
 config/config.yml
 
 purring.db
+*.db
 
 # Spyder project settings
 .spyderproject
