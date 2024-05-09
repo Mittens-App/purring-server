@@ -20,6 +20,11 @@ class TestcaseRepository:
     
     def create(self, testcase: TestCase):
         self.db.add(testcase)
+        self.db.flush()
+        return testcase
+    
+    def createCaseTags(self, casetags = []):
+        self.db.add_all(casetags)
     
     def get(self, id: int):
         return self.db.query(TestCase).where(TestCase.id==id).first()

@@ -8,8 +8,9 @@ service Testcase {
     rpc Get(GetRequest) returns (GetResponse) {}
     // rpc Detail(DetailRequest) returns (DetailResponse) {}
     rpc Create(CreateRequest) returns (CreateResponse) {}
-    // rpc Update(DetailRequest) returns (DetailResponse) {}
-    // rpc Delete(DetailRequest) returns (DetailResponse) {}
+    // rpc Update(UpdateRequest) returns (UpdateResponse) {}
+    // rpc Delete(DeleteRequest) returns (DeleteResponse) {}
+    // rpc Run(RunRequest) returns (RunResponse) {}
 }
 
 message GetRequest {

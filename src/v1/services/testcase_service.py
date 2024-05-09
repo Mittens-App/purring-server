@@ -9,10 +9,10 @@ from src.v1.repositories.result_repository import ResultRepository
 from src.v1.models.testcase import ResultEnum
 from src.v1.models.result import StatusEnum, Result, ResultTags, ResultMessage
 from src.v1.models.result_suite import ResultCase
-from src.v1.models.testcase import TestCase
+from src.v1.models.testcase import TestCase, TestCaseTags
 # from src.v1.gateways.http_auth import Result as HttpResult
 from src.v1.services.manager import AutomationManager
-from src.v1.protofiles.testcase_pb2 import GetResponse, MetaDataResponse, DataResponse, Tag
+from src.v1.protofiles.testcase_pb2 import GetResponse, MetaDataResponse, DataResponse, Tag, CreateResponse
 
 class TestcaseService:
     testcaseRepo: TestcaseRepository
@@ -169,5 +169,51 @@ class TestcaseService:
         
         return body
 
-    def create(self):
+    def create(self, payload, creator):
+        testcase = TestCase()
+        testcase.name = payload.name
+        testcase.description = payload.desc
+        testcase.file = payload.file
+        tag_ids = payload.tag_ids
+        testcase.creator = creator
+
+        status = rpc_status.OK
+        rpc_response = CreateResponse(
+            message="success",
+        )
+
+        isError = False
+        try:
+            self.testcaseRepo.create(testcase)
+            self.testcaseRepo.commit()
+        except SQLAlchemyError as e:
+            isError = True
+            error = str(e.__dict__)
+            self.testcaseRepo.rollback()
+            rpc_response.message = error
+            status = rpc_status.INTERNAL
+
+        rpc_response.status= str(status)
+        if isError is True:
+            return Response(
+                body=rpc_response,
+                status=status
+            )
+
+        tags = []
+        for tag_id in tag_ids:
+            tag = TestCaseTags()
+            tag.testcase_id = testcase.id
+            tag.tag_id = tag_id
+            tags.append(tag)
+
+        if len(tags) > 0:
+            self.testcaseRepo.createCaseTags(tags)
+        
+        self.testcaseRepo.commit()
+
+        return Response(
+            body=rpc_response,
+            status=status
+        )
         pass
