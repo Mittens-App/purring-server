@@ -10,7 +10,7 @@ service Testcase {
     rpc Create(CreateRequest) returns (CreateResponse) {}
     // rpc Update(UpdateRequest) returns (UpdateResponse) {}
     // rpc Delete(DeleteRequest) returns (DeleteResponse) {}
-    // rpc Run(RunRequest) returns (RunResponse) {}
+    rpc Run(RunRequest) returns (RunResponse) {}
 }
 
 message GetRequest {
@@ -60,6 +60,15 @@ message CreateRequest {
 }
 
 message CreateResponse {
+    string status = 1;
+    string message = 2;
+}
+
+message RunRequest {
+    uint32 id = 1;
+}
+
+message RunResponse {
     string status = 1;
     string message = 2;
 }

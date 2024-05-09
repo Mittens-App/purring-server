@@ -84,3 +84,17 @@ class CreateResponse(_message.Message):
     status: str
     message: str
     def __init__(self, status: _Optional[str] = ..., message: _Optional[str] = ...) -> None: ...
+
+class RunRequest(_message.Message):
+    __slots__ = ("id",)
+    ID_FIELD_NUMBER: _ClassVar[int]
+    id: int
+    def __init__(self, id: _Optional[int] = ...) -> None: ...
+
+class RunResponse(_message.Message):
+    __slots__ = ("status", "message")
+    STATUS_FIELD_NUMBER: _ClassVar[int]
+    MESSAGE_FIELD_NUMBER: _ClassVar[int]
+    status: str
+    message: str
+    def __init__(self, status: _Optional[str] = ..., message: _Optional[str] = ...) -> None: ...

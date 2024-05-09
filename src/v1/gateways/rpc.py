@@ -2,7 +2,7 @@ from grpc import ServicerContext
 from src.v1.protofiles.user_pb2 import LoginRequest, LoginResponse
 from src.v1.protofiles.user_pb2_grpc import UserServicer
 from src.v1.services.user_service import UserService
-from src.v1.protofiles.testcase_pb2 import GetRequest as TestcaseGetReq, CreateRequest as TestcaseCreateReq
+from src.v1.protofiles.testcase_pb2 import GetRequest as TestcaseGetReq, CreateRequest as TestcaseCreateReq, RunRequest as TestcaseRunReq
 from src.v1.protofiles.testcase_pb2_grpc import TestcaseServicer
 from src.v1.services.testcase_service import TestcaseService
 from src.v1.protofiles.tag_pb2_grpc import TagServicer
@@ -60,6 +60,13 @@ class Testcase(TestcaseServicer):
 
         context.set_code(result.status)
 
+        return result.body
+    
+    def Run(self, request: TestcaseRunReq, context: ServicerContext):
+        result = self.testcaseService.runAsync(
+            id=request.id, executor=context.myToken["username"]
+        )
+        context.set_code(result.status)
         return result.body
 
 class Tag(TagServicer):

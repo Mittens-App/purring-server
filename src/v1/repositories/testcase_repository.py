@@ -53,7 +53,7 @@ class TestcaseRepository:
         if filter is not None and len(filter) != 0:
             query.where(TestCase.name.like(f"{keyword}%"))
         
-        query.group_by(TestCase.id)
+        query = query.group_by(TestCase.id)
         return {
             "total_count": query.count(),
             "data" : query.order_by(TestCase.name).limit(limit).offset(limit*offset).all()

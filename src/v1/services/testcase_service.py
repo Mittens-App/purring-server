@@ -3,6 +3,7 @@ from grpc import StatusCode as rpc_status
 from sqlalchemy.exc import SQLAlchemyError
 from datetime import datetime
 import math
+import threading
 from src.v1.gateways.response import Response
 from src.v1.repositories.testcase_repository import TestcaseRepository
 from src.v1.repositories.result_repository import ResultRepository
@@ -10,9 +11,8 @@ from src.v1.models.testcase import ResultEnum
 from src.v1.models.result import StatusEnum, Result, ResultTags, ResultMessage
 from src.v1.models.result_suite import ResultCase
 from src.v1.models.testcase import TestCase, TestCaseTags
-# from src.v1.gateways.http_auth import Result as HttpResult
 from src.v1.services.manager import AutomationManager
-from src.v1.protofiles.testcase_pb2 import GetResponse, MetaDataResponse, DataResponse, Tag, CreateResponse
+from src.v1.protofiles.testcase_pb2 import GetResponse, MetaDataResponse, DataResponse, Tag, CreateResponse, RunResponse
 
 class TestcaseService:
     testcaseRepo: TestcaseRepository
@@ -209,11 +209,29 @@ class TestcaseService:
 
         if len(tags) > 0:
             self.testcaseRepo.createCaseTags(tags)
-        
-        self.testcaseRepo.commit()
+            self.testcaseRepo.commit()
 
         return Response(
             body=rpc_response,
             status=status
         )
+    
+    def runAsync(self, id: int, executor: str):
+
+        thread = threading.Thread(target=self.__processTest, args=(id, executor))
+        thread.start()
+
+        return Response(
+            body=RunResponse(
+                message="queued",
+                status=str(rpc_status.OK)
+            ),
+            status=rpc_status.OK
+        )
+
+    def __processTest(self, id: int, executor: str):
+        
+        result =  self.run(id=id, executor=executor)
+        print(result.__dict__)
+
         pass

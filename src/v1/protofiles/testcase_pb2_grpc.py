@@ -25,6 +25,11 @@ class TestcaseStub(object):
                 request_serializer=protofiles_dot_testcase__pb2.CreateRequest.SerializeToString,
                 response_deserializer=protofiles_dot_testcase__pb2.CreateResponse.FromString,
                 )
+        self.Run = channel.unary_unary(
+                '/src.v1.testcase.Testcase/Run',
+                request_serializer=protofiles_dot_testcase__pb2.RunRequest.SerializeToString,
+                response_deserializer=protofiles_dot_testcase__pb2.RunResponse.FromString,
+                )
 
 
 class TestcaseServicer(object):
@@ -45,6 +50,14 @@ class TestcaseServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def Run(self, request, context):
+        """rpc Update(UpdateRequest) returns (UpdateResponse) {}
+        rpc Delete(DeleteRequest) returns (DeleteResponse) {}
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_TestcaseServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -57,6 +70,11 @@ def add_TestcaseServicer_to_server(servicer, server):
                     servicer.Create,
                     request_deserializer=protofiles_dot_testcase__pb2.CreateRequest.FromString,
                     response_serializer=protofiles_dot_testcase__pb2.CreateResponse.SerializeToString,
+            ),
+            'Run': grpc.unary_unary_rpc_method_handler(
+                    servicer.Run,
+                    request_deserializer=protofiles_dot_testcase__pb2.RunRequest.FromString,
+                    response_serializer=protofiles_dot_testcase__pb2.RunResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -100,5 +118,22 @@ class Testcase(object):
         return grpc.experimental.unary_unary(request, target, '/src.v1.testcase.Testcase/Create',
             protofiles_dot_testcase__pb2.CreateRequest.SerializeToString,
             protofiles_dot_testcase__pb2.CreateResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def Run(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/src.v1.testcase.Testcase/Run',
+            protofiles_dot_testcase__pb2.RunRequest.SerializeToString,
+            protofiles_dot_testcase__pb2.RunResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
