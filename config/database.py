@@ -10,7 +10,7 @@ if cfg['db']['dialect'] == "sqlite":
 
 # Create Database Engine
 Engine = create_engine(
-    DATABASE_URL, echo=cfg['db']['debug'], future=True
+    DATABASE_URL, echo=cfg['db']['debug'], future=True, isolation_level="READ COMMITTED"
 )
 
 SessionLocal = sessionmaker(
