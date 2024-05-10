@@ -5,12 +5,14 @@ from config.loader import ConfigLoad as cfg
 
 # Generate Database URL
 DATABASE_URL = f"{cfg['db']['dialect']}://{cfg['db']['username']}:{cfg['db']['password']}@{cfg['db']['host']}:{cfg['db']['port']}/{cfg['db']['database']}"
+ISOLATION_LEVEL = "READ COMMITTED"
 if cfg['db']['dialect'] == "sqlite":
     DATABASE_URL = "sqlite:///./purring.db"
+    ISOLATION_LEVEL = "READ UNCOMMITTED"
 
 # Create Database Engine
 Engine = create_engine(
-    DATABASE_URL, echo=cfg['db']['debug'], future=True, isolation_level="READ COMMITTED"
+    DATABASE_URL, echo=cfg['db']['debug'], future=True, isolation_level=ISOLATION_LEVEL
 )
 
 SessionLocal = sessionmaker(
