@@ -57,7 +57,8 @@ class AutomationManager :
         return comments
     
     def get_functions(self, file_path):
-        file_path = "/".join([self.__source_dir, file_path])
+        if self.__source_dir is not False:
+            file_path = "/".join([self.__source_dir, file_path])
         
         with open(file_path, 'r') as file:
             source = file.read()
