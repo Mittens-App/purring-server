@@ -40,10 +40,11 @@ class MetaDataResponse(_message.Message):
     def __init__(self, current_page: _Optional[int] = ..., per_page: _Optional[int] = ..., total: _Optional[int] = ..., last_page: _Optional[int] = ...) -> None: ...
 
 class DataResponse(_message.Message):
-    __slots__ = ("id", "name", "desc", "tags", "creator", "last_execute_date", "last_execute_result")
+    __slots__ = ("id", "name", "desc", "file", "tags", "creator", "last_execute_date", "last_execute_result")
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     DESC_FIELD_NUMBER: _ClassVar[int]
+    FILE_FIELD_NUMBER: _ClassVar[int]
     TAGS_FIELD_NUMBER: _ClassVar[int]
     CREATOR_FIELD_NUMBER: _ClassVar[int]
     LAST_EXECUTE_DATE_FIELD_NUMBER: _ClassVar[int]
@@ -51,11 +52,12 @@ class DataResponse(_message.Message):
     id: int
     name: str
     desc: str
+    file: str
     tags: _containers.RepeatedCompositeFieldContainer[Tag]
     creator: str
     last_execute_date: str
     last_execute_result: str
-    def __init__(self, id: _Optional[int] = ..., name: _Optional[str] = ..., desc: _Optional[str] = ..., tags: _Optional[_Iterable[_Union[Tag, _Mapping]]] = ..., creator: _Optional[str] = ..., last_execute_date: _Optional[str] = ..., last_execute_result: _Optional[str] = ...) -> None: ...
+    def __init__(self, id: _Optional[int] = ..., name: _Optional[str] = ..., desc: _Optional[str] = ..., file: _Optional[str] = ..., tags: _Optional[_Iterable[_Union[Tag, _Mapping]]] = ..., creator: _Optional[str] = ..., last_execute_date: _Optional[str] = ..., last_execute_result: _Optional[str] = ...) -> None: ...
 
 class Tag(_message.Message):
     __slots__ = ("name", "color")
@@ -85,6 +87,42 @@ class CreateResponse(_message.Message):
     message: str
     def __init__(self, status: _Optional[str] = ..., message: _Optional[str] = ...) -> None: ...
 
+class UpdateRequest(_message.Message):
+    __slots__ = ("id", "name", "desc", "file", "tag_ids")
+    ID_FIELD_NUMBER: _ClassVar[int]
+    NAME_FIELD_NUMBER: _ClassVar[int]
+    DESC_FIELD_NUMBER: _ClassVar[int]
+    FILE_FIELD_NUMBER: _ClassVar[int]
+    TAG_IDS_FIELD_NUMBER: _ClassVar[int]
+    id: int
+    name: str
+    desc: str
+    file: str
+    tag_ids: _containers.RepeatedScalarFieldContainer[int]
+    def __init__(self, id: _Optional[int] = ..., name: _Optional[str] = ..., desc: _Optional[str] = ..., file: _Optional[str] = ..., tag_ids: _Optional[_Iterable[int]] = ...) -> None: ...
+
+class UpdateResponse(_message.Message):
+    __slots__ = ("status", "message")
+    STATUS_FIELD_NUMBER: _ClassVar[int]
+    MESSAGE_FIELD_NUMBER: _ClassVar[int]
+    status: str
+    message: str
+    def __init__(self, status: _Optional[str] = ..., message: _Optional[str] = ...) -> None: ...
+
+class DeleteRequest(_message.Message):
+    __slots__ = ("id",)
+    ID_FIELD_NUMBER: _ClassVar[int]
+    id: int
+    def __init__(self, id: _Optional[int] = ...) -> None: ...
+
+class DeleteResponse(_message.Message):
+    __slots__ = ("status", "message")
+    STATUS_FIELD_NUMBER: _ClassVar[int]
+    MESSAGE_FIELD_NUMBER: _ClassVar[int]
+    status: str
+    message: str
+    def __init__(self, status: _Optional[str] = ..., message: _Optional[str] = ...) -> None: ...
+
 class RunRequest(_message.Message):
     __slots__ = ("id",)
     ID_FIELD_NUMBER: _ClassVar[int]
@@ -98,3 +136,31 @@ class RunResponse(_message.Message):
     status: str
     message: str
     def __init__(self, status: _Optional[str] = ..., message: _Optional[str] = ...) -> None: ...
+
+class ViewRequest(_message.Message):
+    __slots__ = ("path",)
+    PATH_FIELD_NUMBER: _ClassVar[int]
+    path: str
+    def __init__(self, path: _Optional[str] = ...) -> None: ...
+
+class ViewResponse(_message.Message):
+    __slots__ = ("status", "message", "classname", "path", "functions")
+    STATUS_FIELD_NUMBER: _ClassVar[int]
+    MESSAGE_FIELD_NUMBER: _ClassVar[int]
+    CLASSNAME_FIELD_NUMBER: _ClassVar[int]
+    PATH_FIELD_NUMBER: _ClassVar[int]
+    FUNCTIONS_FIELD_NUMBER: _ClassVar[int]
+    status: str
+    message: str
+    classname: str
+    path: str
+    functions: _containers.RepeatedCompositeFieldContainer[DefFunction]
+    def __init__(self, status: _Optional[str] = ..., message: _Optional[str] = ..., classname: _Optional[str] = ..., path: _Optional[str] = ..., functions: _Optional[_Iterable[_Union[DefFunction, _Mapping]]] = ...) -> None: ...
+
+class DefFunction(_message.Message):
+    __slots__ = ("name", "comment")
+    NAME_FIELD_NUMBER: _ClassVar[int]
+    COMMENT_FIELD_NUMBER: _ClassVar[int]
+    name: str
+    comment: str
+    def __init__(self, name: _Optional[str] = ..., comment: _Optional[str] = ...) -> None: ...

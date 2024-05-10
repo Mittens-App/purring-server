@@ -58,3 +58,10 @@ class TestcaseRepository:
             "total_count": query.count(),
             "data" : query.order_by(TestCase.name).limit(limit).offset(limit*offset).all()
             }
+    
+    def delete_by_id(self, id):
+        self.delete_tags_by_id(id)
+        return self.db.query(TestCase).where(TestCase.id==id).delete()
+    
+    def delete_tags_by_id(self, id):
+        return self.db.query(TestCaseTags).where(TestCaseTags.testcase_id==id).delete()

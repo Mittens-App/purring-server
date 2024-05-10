@@ -12,7 +12,7 @@ from src.v1.models.result import StatusEnum, Result, ResultTags, ResultMessage
 from src.v1.models.result_suite import ResultCase
 from src.v1.models.testcase import TestCase, TestCaseTags
 from src.v1.services.manager import AutomationManager
-from src.v1.protofiles.testcase_pb2 import GetResponse, MetaDataResponse, DataResponse, Tag, CreateResponse, RunResponse
+from src.v1.protofiles.testcase_pb2 import GetResponse, MetaDataResponse, DataResponse, Tag, CreateResponse, RunResponse, UpdateResponse, DeleteResponse, ViewResponse, DefFunction
 
 class TestcaseService:
     testcaseRepo: TestcaseRepository
@@ -235,3 +235,111 @@ class TestcaseService:
         print(result.__dict__)
 
         pass
+
+    def update(self, payload):
+        testcase = self.testcaseRepo.get(id)
+
+        if testcase is None or len(testcase) == 0:
+            return Response(
+                body=DeleteResponse(
+                    message="failed",
+                    status=str(rpc_status.NOT_FOUND)
+                ),
+                status=rpc_status.NOT_FOUND
+            )
+        
+        testcase.name = payload.name
+        testcase.description = payload.desc
+        testcase.file = payload.file
+        tag_ids = payload.tag_ids
+
+        status = rpc_status.OK
+        rpc_response = UpdateResponse(
+            message="success",
+        )
+
+        isError = False
+        try:
+            self.testcaseRepo.delete_tags_by_id(testcase.id)
+            self.testcaseRepo.commit()
+        except SQLAlchemyError as e:
+            isError = True
+            error = str(e.__dict__)
+            self.testcaseRepo.rollback()
+            rpc_response.message = error
+            status = rpc_status.INTERNAL
+
+        rpc_response.status= str(status)
+        if isError is True:
+            return Response(
+                body=rpc_response,
+                status=status
+            )
+
+        tags = []
+        for tag_id in tag_ids:
+            tag = TestCaseTags()
+            tag.testcase_id = testcase.id
+            tag.tag_id = tag_id
+            tags.append(tag)
+
+        if len(tags) > 0:
+            self.testcaseRepo.createCaseTags(tags)
+            self.testcaseRepo.commit()
+
+        return Response(
+            body=rpc_response,
+            status=status
+        )
+
+    def delete(self, id: int):
+        testcase = self.testcaseRepo.get(id)
+
+        if testcase is None or len(testcase) == 0:
+            return Response(
+                body=DeleteResponse(
+                    message="failed",
+                    status=str(rpc_status.NOT_FOUND)
+                ),
+                status=rpc_status.NOT_FOUND
+            )
+
+        status = rpc_status.OK
+        rpc_response = DeleteResponse(
+            message="success",
+        )
+
+        try:
+            self.testcaseRepo.delete_by_id(id)
+            self.testcaseRepo.commit()
+        except SQLAlchemyError as e:
+            error = str(e.__dict__)
+            self.testcaseRepo.rollback()
+            rpc_response.message = error
+            status = rpc_status.INTERNAL
+        
+        return Response(
+            body=rpc_response,
+            status=status
+        )
+    
+    def view(self, path):
+        rpc_response = ViewResponse(
+            message="success",
+            status=str(rpc_status.OK)
+        )
+
+        class_file = self.manager.get_functions(path)
+        
+        rpc_response.classname = class_file.classname
+        rpc_response.path = class_file.path
+        
+        for f in class_file.functions:
+            rpc_response.functions.append(
+                DefFunction(name=f.name, comment=f.comment)
+            )
+
+        return Response(
+            body=rpc_response,
+            status=rpc_status.OK
+        )
