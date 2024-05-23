@@ -1,5 +1,5 @@
 from grpc import ServicerContext
-from src.v1.protofiles.user_pb2 import LoginRequest, LoginResponse
+from src.v1.protofiles.user_pb2 import LoginRequest, LoginResponse, PingRequest, PingResponse
 from src.v1.protofiles.user_pb2_grpc import UserServicer
 from src.v1.services.user_service import UserService
 from src.v1.protofiles.testcase_pb2 import GetRequest as TestcaseGetReq, CreateRequest as TestcaseCreateReq, RunRequest as TestcaseRunReq, UpdateRequest as TestcaseUpdateReq, DeleteRequest as TestcaseDeleteReq, ViewRequest as TestcaseViewReq
@@ -30,6 +30,11 @@ class User(UserServicer):
             username=result.body['username'],
             status=str(result.status),
             token=result.body['token']
+        )
+    
+    def Ping(self, request: PingRequest, context: ServicerContext):
+        return PingResponse(
+            status="OK"
         )
 
 class Testcase(TestcaseServicer):

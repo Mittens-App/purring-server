@@ -21,3 +21,13 @@ class LoginResponse(_message.Message):
     token: str
     username: str
     def __init__(self, status: _Optional[str] = ..., token: _Optional[str] = ..., username: _Optional[str] = ...) -> None: ...
+
+class PingRequest(_message.Message):
+    __slots__ = ()
+    def __init__(self) -> None: ...
+
+class PingResponse(_message.Message):
+    __slots__ = ("status",)
+    STATUS_FIELD_NUMBER: _ClassVar[int]
+    status: str
+    def __init__(self, status: _Optional[str] = ...) -> None: ...

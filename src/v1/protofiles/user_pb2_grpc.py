@@ -20,6 +20,11 @@ class UserStub(object):
                 request_serializer=protofiles_dot_user__pb2.LoginRequest.SerializeToString,
                 response_deserializer=protofiles_dot_user__pb2.LoginResponse.FromString,
                 )
+        self.Ping = channel.unary_unary(
+                '/src.v1.user.User/Ping',
+                request_serializer=protofiles_dot_user__pb2.PingRequest.SerializeToString,
+                response_deserializer=protofiles_dot_user__pb2.PingResponse.FromString,
+                )
 
 
 class UserServicer(object):
@@ -33,6 +38,13 @@ class UserServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def Ping(self, request, context):
+        """Ping request
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_UserServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -40,6 +52,11 @@ def add_UserServicer_to_server(servicer, server):
                     servicer.Login,
                     request_deserializer=protofiles_dot_user__pb2.LoginRequest.FromString,
                     response_serializer=protofiles_dot_user__pb2.LoginResponse.SerializeToString,
+            ),
+            'Ping': grpc.unary_unary_rpc_method_handler(
+                    servicer.Ping,
+                    request_deserializer=protofiles_dot_user__pb2.PingRequest.FromString,
+                    response_serializer=protofiles_dot_user__pb2.PingResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -66,5 +83,22 @@ class User(object):
         return grpc.experimental.unary_unary(request, target, '/src.v1.user.User/Login',
             protofiles_dot_user__pb2.LoginRequest.SerializeToString,
             protofiles_dot_user__pb2.LoginResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def Ping(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/src.v1.user.User/Ping',
+            protofiles_dot_user__pb2.PingRequest.SerializeToString,
+            protofiles_dot_user__pb2.PingResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
