@@ -1,9 +1,6 @@
 name: purring_server CD
 
-on:
-  push:
-    branches:
-      - main
+on: workflow_dispatch
 
 jobs:
   build:
