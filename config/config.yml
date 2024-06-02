@@ -1,18 +1,51 @@
+# [env] String
+# There are two option: 
+# - DEVELOPMENT: for app development purpose. enable auto reload FastAPI. disable worker
+# - PRODUCTION: this is a must use value for this app
+# Any unregistered value will be treatment as DEVELOPMENT
 env: DEVELOPMENT
+
+# [db] Obj
+# Database connection config for purring_server. please make sure this app granted to CREATE, ALTER, TRUNCATE, any CUD on your specific database
+#
+# [db.username] String. Target database username
+# [db.password] String. Target database password
+# [db.database] String. Target database name
+# [db.host] String. Target database host
+# [db.port] Int. Target database port. ignored if 'sqlite' dialect
+# [db.dialect] String. You can set between sqlite/mysql
+# [db.debug] Bool. Development purpose. If true, it will log any database queries.
 db:
   username: ''
   password: ''
   database: ''
   host: ''
   port: 0
-  dialect: sqlite # sqlite, mysql
+  dialect: sqlite
   debug: true
+
+# [secret] String
+# This is app secret key auth. It will handle http and grpc authorization. Please change this value
 secret: 'a12345'
+
+# [grpc] Obj
+# [grpc.port] Int. GRPC port server. default port is 50051
+# [grpc.worker] Int. GRPC worker server. The maximum number of threads that can be used to execute the given calls. You cannot set to below zero.
+#   You can refer to https://docs.python.org/3/library/concurrent.futures.html 
 grpc:
   port: 50051
   worker: 10
+
+# [http] Obj
+# [http.host] String. http server fastAPI host config. please leave it as empty string/ 127.0.0.1
+# [http.port] Int. http server fastAPI port config
+# [http.worker] Int. fastAPI uvicorn worker. This worker only effect on PRODUCTION mode in env. 
+#   Please be wise on put this value. You can refer to https://fastapi.tiangolo.com/deployment/server-workers/
 http:
   host: ''
   port: 8000
   worker: 2
+
+# [source] String | false
+## Python destination file. if false, it will read path files as absolute path. Otherwise, its relative path
 source: false
