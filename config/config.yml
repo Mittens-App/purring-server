@@ -8,10 +8,10 @@ env: DEVELOPMENT
 # [db] Obj
 # Database connection config for purring_server. please make sure this app granted to CREATE, ALTER, TRUNCATE, any CUD on your specific database
 #
-# [db.username] String. Target database username
-# [db.password] String. Target database password
-# [db.database] String. Target database name
-# [db.host] String. Target database host
+# [db.username] String. Target database username. ignored if 'sqlite' dialect
+# [db.password] String. Target database password. ignored if 'sqlite' dialect
+# [db.database] String. Target database name. ignored if 'sqlite' dialect
+# [db.host] String. Target database host. ignored if 'sqlite' dialect
 # [db.port] Int. Target database port. ignored if 'sqlite' dialect
 # [db.dialect] String. You can set between sqlite/mysql
 # [db.debug] Bool. Development purpose. If true, it will log any database queries.
