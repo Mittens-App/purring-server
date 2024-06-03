@@ -1,5 +1,4 @@
 # run: poetry run python main.py
-
 [tool.poetry]
 name = "purring-server"
 version = "0.1.0"
