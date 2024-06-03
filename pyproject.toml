@@ -1,0 +1,38 @@
+# run: poetry run python main.py
+
+[tool.poetry]
+name = "purring-server"
+version = "0.1.0"
+description = "Service management test tools for Python unittest codes"
+package-mode = false
+
+license = "Apache-2.0"
+
+repository = "https://github.com/mittensapp/purring_server"
+authors = [
+    "Rizal Maulana Fahmi <gorenglahayam@gmail.com>",
+    "Achmad Satrio <achmadsatrio103@gmail.com>"
+]
+readme = ["README.md"]
+# documentation = ""
+
+keywords = ["unittest", "automate", "management test tools"]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+grpcio = ">=1.62.2"
+grpcio-tools = ">=1.62.2"
+grpcio-reflection = ">=1.62.2"
+grpcio-status = ">=1.62.2"
+grpc-interceptor = ">=0.15.4"
+fastapi = {version = ">=0.110.2", extras = ["all"]}
+pyjwt = ">=2.8.0"
+pyyaml = ">=6.0.1"
+mysqlclient = ">=2.2.4"
+sqlalchemy = ">=2.0.29"
+uvicorn = ">=0.29.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
