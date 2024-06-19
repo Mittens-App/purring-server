@@ -32,3 +32,6 @@ class TagRepository:
     
     def delete_by_id(self, id):
         return self.db.query(Tag).where(Tag.id==id).delete()
+
+    def total_tag(self):
+        return self.db.query(Tag).count()

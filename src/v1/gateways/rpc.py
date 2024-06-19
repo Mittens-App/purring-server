@@ -6,6 +6,9 @@ from src.v1.protofiles.testcase_pb2 import GetRequest as TestcaseGetReq, CreateR
 from src.v1.protofiles.testcase_pb2_grpc import TestcaseServicer
 from src.v1.services.testcase_service import TestcaseService
 from src.v1.protofiles.tag_pb2_grpc import TagServicer
+from src.v1.protofiles.report_pb2_grpc import ReportServicer
+from src.v1.protofiles.report_pb2 import ReportResponse
+from src.v1.services.report_service import ReportService
 from src.v1.protofiles.tag_pb2 import GetRequest as TagGetReq, CreateRequest as TagCreateReq, UpdateRequest as TagUpdateReq, DeleteRequest as TagDeleteReq
 from src.v1.services.tag_service import TagService
 
@@ -116,5 +119,18 @@ class Tag(TagServicer):
     
     def Delete(self, request: TagDeleteReq, context: ServicerContext):
         result = self.tagService.delete(request.id)
+        context.set_code(result.status)
+        return result.body
+    
+class Report(ReportServicer):
+
+    reportService: ReportService
+
+    def __init__(self):
+        super().__init__()
+        self.reportService = ReportService()
+
+    def Report(self, request, context: ServicerContext):
+        result = self.reportService.get()
         context.set_code(result.status)
         return result.body

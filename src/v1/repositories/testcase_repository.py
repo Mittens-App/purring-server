@@ -65,3 +65,6 @@ class TestcaseRepository:
     
     def delete_tags_by_id(self, id):
         return self.db.query(TestCaseTags).where(TestCaseTags.testcase_id==id).delete()
+
+    def total_testcase(self):
+        return self.db.query(TestCase).count()

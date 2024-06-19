@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package src.v1.report; 
+
+// Report Service
+service Report {
+    // Report request
+    rpc Report(ReportRequest) returns (ReportResponse) {}
+}
+
+message ReportRequest {
+ 
+}
+
+message ReportResponse {
+    // total active testcases
+    string total_testcases = 1;
+    // total active tags
+    string total_tags = 2;
+}
