@@ -3,7 +3,7 @@ name: purring_server CD
 on: workflow_dispatch
 
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
     steps:
       - name: Deploy Using ssh
