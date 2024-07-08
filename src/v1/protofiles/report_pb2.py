@@ -14,7 +14,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x17protofiles/report.proto\x12\rsrc.v1.report\"\x0f\n\rReportRequest\"=\n\x0eReportResponse\x12\x17\n\x0ftotal_testcases\x18\x01 \x01(\t\x12\x12\n\ntotal_tags\x18\x02 \x01(\t2Q\n\x06Report\x12G\n\x06Report\x12\x1c.src.v1.report.ReportRequest\x1a\x1d.src.v1.report.ReportResponse\"\x00\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x17protofiles/report.proto\x12\rsrc.v1.report\"\x0f\n\rReportRequest\"\x96\x02\n\x0eReportResponse\x12\x17\n\x0ftotal_testcases\x18\x01 \x01(\r\x12\x12\n\ntotal_tags\x18\x02 \x01(\r\x12\x1a\n\x12total_efectiveness\x18\x03 \x01(\x01\x12/\n\nResultData\x18\x04 \x03(\x0b\x32\x1b.src.v1.report.DataResponse\x12/\n\x07TagData\x18\x05 \x03(\x0b\x32\x1e.src.v1.report.TagDataResponse\x12\x1c\n\x14\x63urrent_month_string\x18\x06 \x01(\t\x12\x15\n\rcurrent_month\x18\x07 \x01(\r\x12\x14\n\x0c\x63urrent_year\x18\x08 \x01(\r\x12\x0e\n\x06status\x18\t \x01(\t\"X\n\x0c\x44\x61taResponse\x12\n\n\x02id\x18\x01 \x01(\r\x12\x0c\n\x04\x64\x61te\x18\x02 \x01(\t\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x0e\n\x06status\x18\x04 \x01(\t\x12\x10\n\x08\x65xecutor\x18\x05 \x01(\t\"P\n\x0fTagDataResponse\x12\n\n\x02id\x18\x01 \x01(\r\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\r\n\x05total\x18\x03 \x01(\r\x12\x14\n\x0c\x65\x66\x65\x63tiveness\x18\x04 \x01(\x01\x32Q\n\x06Report\x12G\n\x06Report\x12\x1c.src.v1.report.ReportRequest\x1a\x1d.src.v1.report.ReportResponse\"\x00\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -23,8 +23,12 @@ if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
   _globals['_REPORTREQUEST']._serialized_start=42
   _globals['_REPORTREQUEST']._serialized_end=57
-  _globals['_REPORTRESPONSE']._serialized_start=59
-  _globals['_REPORTRESPONSE']._serialized_end=120
-  _globals['_REPORT']._serialized_start=122
-  _globals['_REPORT']._serialized_end=203
+  _globals['_REPORTRESPONSE']._serialized_start=60
+  _globals['_REPORTRESPONSE']._serialized_end=338
+  _globals['_DATARESPONSE']._serialized_start=340
+  _globals['_DATARESPONSE']._serialized_end=428
+  _globals['_TAGDATARESPONSE']._serialized_start=430
+  _globals['_TAGDATARESPONSE']._serialized_end=510
+  _globals['_REPORT']._serialized_start=512
+  _globals['_REPORT']._serialized_end=593
 # @@protoc_insertion_point(module_scope)

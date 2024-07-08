@@ -39,12 +39,14 @@ import src.v1.protofiles.user_pb2_grpc as user_pb2_grpc
 import src.v1.protofiles.testcase_pb2_grpc as testcase_pb2_grpc
 import src.v1.protofiles.tag_pb2_grpc as tag_pb2_grpc
 import src.v1.protofiles.report_pb2_grpc as report_pb2_grpc
-from src.v1.gateways.rpc import User, Testcase, Tag, Report
+import src.v1.protofiles.result_pb2_grpc as result_pb2_grpc
+from src.v1.gateways.rpc import User, Testcase, Tag, Report, Result
 
 user_pb2_grpc.add_UserServicer_to_server(User(), server)
 testcase_pb2_grpc.add_TestcaseServicer_to_server(Testcase(), server)
 tag_pb2_grpc.add_TagServicer_to_server(Tag(), server)
 report_pb2_grpc.add_ReportServicer_to_server(Report(), server)
+result_pb2_grpc.add_ResultServicer_to_server(Result(), server)
 
 
 # init db model

@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+package src.v1.result; 
+
+// Result Service
+service Result {
+    // Return for result page
+    rpc Get(GetRequest) returns (GetResponse) {}
+}
+
+message GetRequest {
+    // filter for keyword
+    string filter = 1;
+    // keyword for searching
+    string keyword = 2;
+    // limit data request
+    uint32 limit = 3;
+    // page data request
+    uint32 page = 4;
+}
+
+message GetResponse {
+    // status process
+    string status = 1;
+    // response data as list
+    repeated DataResponse data = 2;
+    // metadata
+    MetaDataResponse metadata = 3;
+}
+
+message DataResponse {
+    // id of result
+    uint32 id = 1;
+    // testcase name 
+    string name = 2;
+    // test execute date
+    string execute_date = 3;
+    // test duration
+    float duration = 4;
+    // test status
+    string test_status = 5;
+    // test efectiveness
+    float efectiveness = 6;
+    // test executor
+    string executor = 7;
+    // data tag
+    repeated DataDetail DataTag = 8;
+}
+
+message DataDetail {
+    // tag name
+    string name = 2;
+    // tag color
+    string color = 3;
+}
+
+message MetaDataResponse {
+    // current page
+    uint32 current_page = 1;
+    // data per page
+    uint32 per_page = 2;
+    // total rows data
+    uint32 total = 3;
+    // maximum page
+    uint32 last_page = 4;
+}

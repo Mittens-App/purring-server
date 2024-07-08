@@ -11,6 +11,9 @@ from src.v1.protofiles.report_pb2 import ReportResponse
 from src.v1.services.report_service import ReportService
 from src.v1.protofiles.tag_pb2 import GetRequest as TagGetReq, CreateRequest as TagCreateReq, UpdateRequest as TagUpdateReq, DeleteRequest as TagDeleteReq
 from src.v1.services.tag_service import TagService
+from src.v1.protofiles.result_pb2_grpc import ResultServicer
+from src.v1.protofiles.result_pb2 import GetRequest as ResultGetReq
+from src.v1.services.result_service import ResultService
 
 class User(UserServicer):
     """implement user.proto
@@ -132,5 +135,25 @@ class Report(ReportServicer):
 
     def Report(self, request, context: ServicerContext):
         result = self.reportService.get()
+        context.set_code(result.status)
+        return result.body
+    
+class Result(ResultServicer):
+    """implement result.proto
+    """
+
+    resultService: ResultService
+
+    def __init__(self):
+        super().__init__()
+        self.resultService = ResultService()
+
+    def Get(self, request: ResultGetReq, context: ServicerContext):
+        result = self.resultService.get(
+                filter = request.filter,
+                keyword = request.keyword,
+                limit = request.limit,
+                page = request.page
+            )
         context.set_code(result.status)
         return result.body
