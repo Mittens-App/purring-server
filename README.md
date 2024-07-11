@@ -1,6 +1,6 @@
 # purring_server
 
-[![purring_server CD](https://github.com/mittensapp/purring-server/actions/workflows/cd.yml/badge.svg)](https://github.com/mittensapp/purring-server/actions/workflows/cd.yml) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=mittensapp_purring-server&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=mittensapp_purring-server)
+[![purring_server CD](https://github.com/mittensapp/purring-server/actions/workflows/cd.yml/badge.svg)](https://github.com/mittensapp/purring-server/actions/workflows/cd.yml) [![purring_server CI](https://github.com/mittensapp/purring-server/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/mittensapp/purring-server/actions/workflows/ci.yml) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=mittensapp_purring-server&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=mittensapp_purring-server)
  
 Purring_server is a service management test tools for Python unittest codes. So basically, it runs all your automate python code as long as uses unittest library. Purring_server is our Server into [Mittens](https://github.com/rizalmf/mittens)🐱
 
