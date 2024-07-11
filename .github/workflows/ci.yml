@@ -1,4 +1,4 @@
-name: purring_server CD
+name: purring_server CI
 on:
   pull_request:
     branches:
