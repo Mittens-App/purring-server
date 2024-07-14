@@ -66,3 +66,61 @@ class MetaDataResponse(_message.Message):
     total: int
     last_page: int
     def __init__(self, current_page: _Optional[int] = ..., per_page: _Optional[int] = ..., total: _Optional[int] = ..., last_page: _Optional[int] = ...) -> None: ...
+
+class DetailRequest(_message.Message):
+    __slots__ = ("id",)
+    ID_FIELD_NUMBER: _ClassVar[int]
+    id: int
+    def __init__(self, id: _Optional[int] = ...) -> None: ...
+
+class DetailResponse(_message.Message):
+    __slots__ = ("status", "DataById")
+    STATUS_FIELD_NUMBER: _ClassVar[int]
+    DATABYID_FIELD_NUMBER: _ClassVar[int]
+    status: str
+    DataById: _containers.RepeatedCompositeFieldContainer[ResultDetail]
+    def __init__(self, status: _Optional[str] = ..., DataById: _Optional[_Iterable[_Union[ResultDetail, _Mapping]]] = ...) -> None: ...
+
+class ResultDetail(_message.Message):
+    __slots__ = ("id", "name", "test_count", "duration", "test_status", "efectiveness", "executor", "DataTag", "fail_message")
+    ID_FIELD_NUMBER: _ClassVar[int]
+    NAME_FIELD_NUMBER: _ClassVar[int]
+    TEST_COUNT_FIELD_NUMBER: _ClassVar[int]
+    DURATION_FIELD_NUMBER: _ClassVar[int]
+    TEST_STATUS_FIELD_NUMBER: _ClassVar[int]
+    EFECTIVENESS_FIELD_NUMBER: _ClassVar[int]
+    EXECUTOR_FIELD_NUMBER: _ClassVar[int]
+    DATATAG_FIELD_NUMBER: _ClassVar[int]
+    FAIL_MESSAGE_FIELD_NUMBER: _ClassVar[int]
+    id: int
+    name: str
+    test_count: int
+    duration: float
+    test_status: str
+    efectiveness: float
+    executor: str
+    DataTag: _containers.RepeatedCompositeFieldContainer[DataDetail]
+    fail_message: _containers.RepeatedCompositeFieldContainer[DetailMessage]
+    def __init__(self, id: _Optional[int] = ..., name: _Optional[str] = ..., test_count: _Optional[int] = ..., duration: _Optional[float] = ..., test_status: _Optional[str] = ..., efectiveness: _Optional[float] = ..., executor: _Optional[str] = ..., DataTag: _Optional[_Iterable[_Union[DataDetail, _Mapping]]] = ..., fail_message: _Optional[_Iterable[_Union[DetailMessage, _Mapping]]] = ...) -> None: ...
+
+class DetailMessage(_message.Message):
+    __slots__ = ("type", "method", "message")
+    TYPE_FIELD_NUMBER: _ClassVar[int]
+    METHOD_FIELD_NUMBER: _ClassVar[int]
+    MESSAGE_FIELD_NUMBER: _ClassVar[int]
+    type: str
+    method: str
+    message: str
+    def __init__(self, type: _Optional[str] = ..., method: _Optional[str] = ..., message: _Optional[str] = ...) -> None: ...
+
+class DeleteAllRequest(_message.Message):
+    __slots__ = ()
+    def __init__(self) -> None: ...
+
+class DeleteAllResponse(_message.Message):
+    __slots__ = ("status", "message")
+    STATUS_FIELD_NUMBER: _ClassVar[int]
+    MESSAGE_FIELD_NUMBER: _ClassVar[int]
+    status: str
+    message: str
+    def __init__(self, status: _Optional[str] = ..., message: _Optional[str] = ...) -> None: ...

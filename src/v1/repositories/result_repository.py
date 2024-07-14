@@ -2,13 +2,9 @@ from sqlalchemy.orm import Session, lazyload
 from sqlalchemy.sql import func
 from config.database import db_connection
 from src.v1.models.result import Result, ResultMessage, ResultTags
-from datetime import datetime, date
 
 class ResultRepository:
     db: Session
-    current_time = datetime.now()
-    formated_current = current_time.strftime('%Y-%m-%d %H:%M:%S')
-    first_day_month = datetime(current_time.year, current_time.month, 1, 0, 0, 0)
 
     def __init__(
         self, db: Session = next(db_connection())
@@ -61,10 +57,32 @@ class ResultRepository:
     def get(self, filter = None, keyword = None, limit = 10, offset = 0):
         query = self.db.query(Result)
 
-        if filter is not None and len(filter) != 0:
-            query.where(Result.name.like(f"{keyword}%"))
-        
+        if filter is not None and len(filter) != 0 and filter == "name":
+            query = query.where(Result.name.like(f"{keyword}%"))
+        if filter is not None and len(filter) != 0 and filter == "status":
+            query = query.where(Result.test_status.like(f"{keyword}%"))
+        if filter is not None and len(filter) != 0 and filter == "executor":
+            query = query.where(Result.executor.like(f"{keyword}%"))
+        if filter is not None and len(filter) != 0 and filter == "date" or filter == "date execute":
+            query = query.where(Result.execute_date.like(f"{keyword}%"))
+        if filter is not None and len(filter) != 0 and filter == "tags" or filter == "tag":
+            query = query.join(ResultTags).filter(ResultTags.tag_name.like(f"{keyword}%"))
+
         return {
             "total_count" : query.count(),
             "data" : query.order_by(Result.execute_date.desc()).limit(limit).offset(limit*offset).all()
         } 
+    
+    def get_detail(self, id):
+        return self.db.query(Result).where(Result.id == id).first()
+    
+    def delete_all(self):
+        self.delete_all_tags()
+        self.delete_all_messages()
+        return self.db.query(Result).delete()
+
+    def delete_all_tags(self):
+        return self.db.query(ResultTags).delete()
+    
+    def delete_all_messages(self):
+        return self.db.query(ResultMessage).delete()

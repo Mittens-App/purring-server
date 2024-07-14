@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 from config.database import db_connection
 from src.v1.models.tag import Tag
+from src.v1.models.testcase import TestCaseTags
 
 class TagRepository:
     db: Session
@@ -35,3 +36,8 @@ class TagRepository:
 
     def total_tag(self):
         return self.db.query(Tag).count()
+    
+    def delete_all(self):
+        self.db.query(TestCaseTags).delete()
+        self.db.query(Tag).delete()
+        return self.db.commit()

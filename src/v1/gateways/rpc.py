@@ -12,7 +12,7 @@ from src.v1.services.report_service import ReportService
 from src.v1.protofiles.tag_pb2 import GetRequest as TagGetReq, CreateRequest as TagCreateReq, UpdateRequest as TagUpdateReq, DeleteRequest as TagDeleteReq
 from src.v1.services.tag_service import TagService
 from src.v1.protofiles.result_pb2_grpc import ResultServicer
-from src.v1.protofiles.result_pb2 import GetRequest as ResultGetReq
+from src.v1.protofiles.result_pb2 import GetRequest as ResultGetReq, DetailRequest
 from src.v1.services.result_service import ResultService
 
 class User(UserServicer):
@@ -94,6 +94,11 @@ class Testcase(TestcaseServicer):
         result = self.testcaseService.view(request.path)
         context.set_code(result.status)
         return result.body
+    
+    def DeleteAll(self, request, context: ServicerContext):
+        result = self.testcaseService.delete_all()
+        context.set_code(result.status)
+        return result.body
 
 class Tag(TagServicer):
     """implement tag.proto
@@ -122,6 +127,11 @@ class Tag(TagServicer):
     
     def Delete(self, request: TagDeleteReq, context: ServicerContext):
         result = self.tagService.delete(request.id)
+        context.set_code(result.status)
+        return result.body
+    
+    def DeleteAll(self, request, context: ServicerContext):
+        result = self.tagService.delete_all()
         context.set_code(result.status)
         return result.body
     
@@ -155,5 +165,15 @@ class Result(ResultServicer):
                 limit = request.limit,
                 page = request.page
             )
+        context.set_code(result.status)
+        return result.body
+    
+    def Detail(self, request: DetailRequest, context: ServicerContext):
+        result = self.resultService.detail(id = request.id)
+        context.set_code(result.status)
+        return result.body
+    
+    def DeleteAll(self, request, context: ServicerContext):
+        result = self.resultService.delete_all()
         context.set_code(result.status)
         return result.body

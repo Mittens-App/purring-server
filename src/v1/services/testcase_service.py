@@ -12,7 +12,7 @@ from src.v1.models.result import StatusEnum, Result, ResultTags, ResultMessage
 from src.v1.models.result_suite import ResultCase
 from src.v1.models.testcase import TestCase, TestCaseTags
 from src.v1.services.manager import AutomationManager
-from src.v1.protofiles.testcase_pb2 import GetResponse, MetaDataResponse, DataResponse, Tag, CreateResponse, RunResponse, UpdateResponse, DeleteResponse, ViewResponse, DefFunction
+from src.v1.protofiles.testcase_pb2 import GetResponse, MetaDataResponse, DataResponse, Tag, CreateResponse, RunResponse, UpdateResponse, DeleteResponse, ViewResponse, DefFunction, DeleteAllResponse
 
 class TestcaseService:
     testcaseRepo: TestcaseRepository
@@ -342,4 +342,24 @@ class TestcaseService:
         return Response(
             body=rpc_response,
             status=rpc_status.OK
+        )
+    
+    def delete_all(self):
+        status = rpc_status.OK
+        response = DeleteAllResponse(
+            message="Success",
+            status=str(status)
+        )
+
+        try:
+            self.testcaseRepo.delete_all()
+            self.testcaseRepo.commit()
+        except SQLAlchemyError as err:
+            self.testcaseRepo.rollback()
+            response.message = str(err.__dict__)
+            status = rpc_status.INTERNAL
+
+        return Response(
+            body= response,
+            status= status
         )

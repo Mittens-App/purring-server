@@ -68,3 +68,10 @@ class TestcaseRepository:
 
     def total_testcase(self):
         return self.db.query(TestCase).count()
+    
+    def delete_all(self):
+        self.delete_all_tags()
+        return self.db.query(TestCase).delete()
+    
+    def delete_all_tags(self):
+        return self.db.query(TestCaseTags).delete()

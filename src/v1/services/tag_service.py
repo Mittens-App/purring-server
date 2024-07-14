@@ -2,14 +2,17 @@ from grpc import StatusCode as rpc_status
 from sqlalchemy.exc import SQLAlchemyError
 from src.v1.repositories.tag_repository import TagRepository
 from src.v1.models.tag import Tag
-from src.v1.protofiles.tag_pb2 import CreateResponse, GetResponse, DataResponse, UpdateResponse
+from src.v1.protofiles.tag_pb2 import CreateResponse, GetResponse, DataResponse, UpdateResponse, DeleteAllResponse
 from src.v1.gateways.response import Response
+from src.v1.repositories.testcase_repository import TestcaseRepository
 
 class TagService:
     tagRepo: TagRepository
+    testcaseRepo: TestcaseRepository
     
     def __init__(self):
         self.tagRepo = TagRepository()
+        self.testcaseRepo = TestcaseRepository()
     
     def create(self, payload):
         tag = Tag()
@@ -126,4 +129,23 @@ class TagService:
         return Response(
             body=rpc_response,
             status=status
+        )
+    
+    def delete_all(self):
+        status = rpc_status.OK
+        response = DeleteAllResponse(
+            message="Success",
+            status=str(status)
+        )
+
+        try:
+            self.tagRepo.delete_all()
+        except SQLAlchemyError as err:
+            self.tagRepo.rollback()
+            message = str(err.__dict__)
+            status = rpc_status.INTERNAL
+
+        return Response(
+            body= response,
+            status= status
         )

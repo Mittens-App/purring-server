@@ -14,7 +14,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x17protofiles/result.proto\x12\rsrc.v1.result\"J\n\nGetRequest\x12\x0e\n\x06\x66ilter\x18\x01 \x01(\t\x12\x0f\n\x07keyword\x18\x02 \x01(\t\x12\r\n\x05limit\x18\x03 \x01(\r\x12\x0c\n\x04page\x18\x04 \x01(\r\"{\n\x0bGetResponse\x12\x0e\n\x06status\x18\x01 \x01(\t\x12)\n\x04\x64\x61ta\x18\x02 \x03(\x0b\x32\x1b.src.v1.result.DataResponse\x12\x31\n\x08metadata\x18\x03 \x01(\x0b\x32\x1f.src.v1.result.MetaDataResponse\"\xb9\x01\n\x0c\x44\x61taResponse\x12\n\n\x02id\x18\x01 \x01(\r\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x14\n\x0c\x65xecute_date\x18\x03 \x01(\t\x12\x10\n\x08\x64uration\x18\x04 \x01(\x02\x12\x13\n\x0btest_status\x18\x05 \x01(\t\x12\x14\n\x0c\x65\x66\x65\x63tiveness\x18\x06 \x01(\x02\x12\x10\n\x08\x65xecutor\x18\x07 \x01(\t\x12*\n\x07\x44\x61taTag\x18\x08 \x03(\x0b\x32\x19.src.v1.result.DataDetail\")\n\nDataDetail\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\r\n\x05\x63olor\x18\x03 \x01(\t\"\\\n\x10MetaDataResponse\x12\x14\n\x0c\x63urrent_page\x18\x01 \x01(\r\x12\x10\n\x08per_page\x18\x02 \x01(\r\x12\r\n\x05total\x18\x03 \x01(\r\x12\x11\n\tlast_page\x18\x04 \x01(\r2H\n\x06Result\x12>\n\x03Get\x12\x19.src.v1.result.GetRequest\x1a\x1a.src.v1.result.GetResponse\"\x00\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x17protofiles/result.proto\x12\rsrc.v1.result\"J\n\nGetRequest\x12\x0e\n\x06\x66ilter\x18\x01 \x01(\t\x12\x0f\n\x07keyword\x18\x02 \x01(\t\x12\r\n\x05limit\x18\x03 \x01(\r\x12\x0c\n\x04page\x18\x04 \x01(\r\"{\n\x0bGetResponse\x12\x0e\n\x06status\x18\x01 \x01(\t\x12)\n\x04\x64\x61ta\x18\x02 \x03(\x0b\x32\x1b.src.v1.result.DataResponse\x12\x31\n\x08metadata\x18\x03 \x01(\x0b\x32\x1f.src.v1.result.MetaDataResponse\"\xb9\x01\n\x0c\x44\x61taResponse\x12\n\n\x02id\x18\x01 \x01(\r\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x14\n\x0c\x65xecute_date\x18\x03 \x01(\t\x12\x10\n\x08\x64uration\x18\x04 \x01(\x02\x12\x13\n\x0btest_status\x18\x05 \x01(\t\x12\x14\n\x0c\x65\x66\x65\x63tiveness\x18\x06 \x01(\x02\x12\x10\n\x08\x65xecutor\x18\x07 \x01(\t\x12*\n\x07\x44\x61taTag\x18\x08 \x03(\x0b\x32\x19.src.v1.result.DataDetail\")\n\nDataDetail\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\r\n\x05\x63olor\x18\x03 \x01(\t\"\\\n\x10MetaDataResponse\x12\x14\n\x0c\x63urrent_page\x18\x01 \x01(\r\x12\x10\n\x08per_page\x18\x02 \x01(\r\x12\r\n\x05total\x18\x03 \x01(\r\x12\x11\n\tlast_page\x18\x04 \x01(\r\"\x1b\n\rDetailRequest\x12\n\n\x02id\x18\x01 \x01(\r\"O\n\x0e\x44\x65tailResponse\x12\x0e\n\x06status\x18\x01 \x01(\t\x12-\n\x08\x44\x61taById\x18\x02 \x03(\x0b\x32\x1b.src.v1.result.ResultDetail\"\xeb\x01\n\x0cResultDetail\x12\n\n\x02id\x18\x01 \x01(\r\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x12\n\ntest_count\x18\x03 \x01(\r\x12\x10\n\x08\x64uration\x18\x04 \x01(\x02\x12\x13\n\x0btest_status\x18\x05 \x01(\t\x12\x14\n\x0c\x65\x66\x65\x63tiveness\x18\x06 \x01(\x02\x12\x10\n\x08\x65xecutor\x18\x07 \x01(\t\x12*\n\x07\x44\x61taTag\x18\x08 \x03(\x0b\x32\x19.src.v1.result.DataDetail\x12\x32\n\x0c\x66\x61il_message\x18\t \x03(\x0b\x32\x1c.src.v1.result.DetailMessage\">\n\rDetailMessage\x12\x0c\n\x04type\x18\x01 \x01(\t\x12\x0e\n\x06method\x18\x02 \x01(\t\x12\x0f\n\x07message\x18\x03 \x01(\t\"\x12\n\x10\x44\x65leteAllRequest\"4\n\x11\x44\x65leteAllResponse\x12\x0e\n\x06status\x18\x01 \x01(\t\x12\x0f\n\x07message\x18\x02 \x01(\t2\xe3\x01\n\x06Result\x12>\n\x03Get\x12\x19.src.v1.result.GetRequest\x1a\x1a.src.v1.result.GetResponse\"\x00\x12G\n\x06\x44\x65tail\x12\x1c.src.v1.result.DetailRequest\x1a\x1d.src.v1.result.DetailResponse\"\x00\x12P\n\tDeleteAll\x12\x1f.src.v1.result.DeleteAllRequest\x1a .src.v1.result.DeleteAllResponse\"\x00\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -31,6 +31,18 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_DATADETAIL']._serialized_end=472
   _globals['_METADATARESPONSE']._serialized_start=474
   _globals['_METADATARESPONSE']._serialized_end=566
-  _globals['_RESULT']._serialized_start=568
-  _globals['_RESULT']._serialized_end=640
+  _globals['_DETAILREQUEST']._serialized_start=568
+  _globals['_DETAILREQUEST']._serialized_end=595
+  _globals['_DETAILRESPONSE']._serialized_start=597
+  _globals['_DETAILRESPONSE']._serialized_end=676
+  _globals['_RESULTDETAIL']._serialized_start=679
+  _globals['_RESULTDETAIL']._serialized_end=914
+  _globals['_DETAILMESSAGE']._serialized_start=916
+  _globals['_DETAILMESSAGE']._serialized_end=978
+  _globals['_DELETEALLREQUEST']._serialized_start=980
+  _globals['_DELETEALLREQUEST']._serialized_end=998
+  _globals['_DELETEALLRESPONSE']._serialized_start=1000
+  _globals['_DELETEALLRESPONSE']._serialized_end=1052
+  _globals['_RESULT']._serialized_start=1055
+  _globals['_RESULT']._serialized_end=1282
 # @@protoc_insertion_point(module_scope)

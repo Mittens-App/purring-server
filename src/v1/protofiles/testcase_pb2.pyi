@@ -164,3 +164,15 @@ class DefFunction(_message.Message):
     name: str
     comment: str
     def __init__(self, name: _Optional[str] = ..., comment: _Optional[str] = ...) -> None: ...
+
+class DeleteAllRequest(_message.Message):
+    __slots__ = ()
+    def __init__(self) -> None: ...
+
+class DeleteAllResponse(_message.Message):
+    __slots__ = ("status", "message")
+    STATUS_FIELD_NUMBER: _ClassVar[int]
+    MESSAGE_FIELD_NUMBER: _ClassVar[int]
+    status: str
+    message: str
+    def __init__(self, status: _Optional[str] = ..., message: _Optional[str] = ...) -> None: ...

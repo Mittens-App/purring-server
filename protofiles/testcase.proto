@@ -16,6 +16,8 @@ service Testcase {
     rpc Run(RunRequest) returns (RunResponse) {}
     // get testcase functions
     rpc View(ViewRequest) returns (ViewResponse) {}
+    // delete all testcase 
+    rpc DeleteAll(DeleteAllRequest) returns (DeleteAllResponse) {}
 }
 
 message GetRequest {
@@ -160,4 +162,15 @@ message DefFunction {
     string name = 1;
     // comment of function
     string comment = 2;
+}
+
+message DeleteAllRequest {
+
+}
+
+message DeleteAllResponse {
+    // process status
+    string status = 1;
+    // process message
+    string message = 2;
 }

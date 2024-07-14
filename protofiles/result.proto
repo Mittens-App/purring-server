@@ -6,6 +6,10 @@ package src.v1.result;
 service Result {
     // Return for result page
     rpc Get(GetRequest) returns (GetResponse) {}
+    // Detail Result
+    rpc Detail(DetailRequest) returns(DetailResponse) {}
+    // Delete all rows
+    rpc DeleteAll(DeleteAllRequest) returns (DeleteAllResponse) {}
 }
 
 message GetRequest {
@@ -63,4 +67,57 @@ message MetaDataResponse {
     uint32 total = 3;
     // maximum page
     uint32 last_page = 4;
+}
+
+message DetailRequest {
+    // id result
+    uint32 id = 1;
+}
+
+message DetailResponse {
+    // status process
+    string status = 1;
+    // response data as list
+    repeated ResultDetail DataById = 2;
+}
+
+message ResultDetail {
+    // id of result
+    uint32 id = 1;
+    // testcase name 
+    string name = 2;
+    // test count
+    uint32 test_count = 3;
+    // test duration
+    float duration = 4;
+    // test status
+    string test_status = 5;
+    // test efectiveness
+    float efectiveness = 6;
+    // test executor
+    string executor = 7;
+    // data tag
+    repeated DataDetail DataTag = 8;
+    // data message
+    repeated DetailMessage fail_message = 9;
+}
+
+message DetailMessage {
+    // result type
+    string type = 1;
+    // result method
+    string method = 2;
+    // detail message
+    string message = 3;
+}
+
+message DeleteAllRequest {
+
+}
+
+message DeleteAllResponse {
+    // process status
+    string status = 1;
+    // process message
+    string message = 2;
 }

@@ -12,6 +12,8 @@ service Tag {
     rpc Delete(DeleteRequest) returns (DeleteResponse) {}
     // Update existing tag
     rpc Update(UpdateRequest) returns (UpdateResponse) {}
+    // Delete All tags
+    rpc DeleteAll(DeleteAllRequest) returns (DeleteAllResponse) {}
 }
 
 message CreateRequest {
@@ -80,5 +82,16 @@ message UpdateResponse {
     // status process
     string status = 1;
     // note message from server
+    string message = 2;
+}
+
+message DeleteAllRequest {
+
+}
+
+message DeleteAllResponse {
+    // process status
+    string status = 1;
+    // process message
     string message = 2;
 }

@@ -45,6 +45,16 @@ class ResultStub(object):
                 request_serializer=protofiles_dot_result__pb2.GetRequest.SerializeToString,
                 response_deserializer=protofiles_dot_result__pb2.GetResponse.FromString,
                 _registered_method=True)
+        self.Detail = channel.unary_unary(
+                '/src.v1.result.Result/Detail',
+                request_serializer=protofiles_dot_result__pb2.DetailRequest.SerializeToString,
+                response_deserializer=protofiles_dot_result__pb2.DetailResponse.FromString,
+                _registered_method=True)
+        self.DeleteAll = channel.unary_unary(
+                '/src.v1.result.Result/DeleteAll',
+                request_serializer=protofiles_dot_result__pb2.DeleteAllRequest.SerializeToString,
+                response_deserializer=protofiles_dot_result__pb2.DeleteAllResponse.FromString,
+                _registered_method=True)
 
 
 class ResultServicer(object):
@@ -58,6 +68,20 @@ class ResultServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def Detail(self, request, context):
+        """Detail Result
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def DeleteAll(self, request, context):
+        """Delete all rows
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_ResultServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -65,6 +89,16 @@ def add_ResultServicer_to_server(servicer, server):
                     servicer.Get,
                     request_deserializer=protofiles_dot_result__pb2.GetRequest.FromString,
                     response_serializer=protofiles_dot_result__pb2.GetResponse.SerializeToString,
+            ),
+            'Detail': grpc.unary_unary_rpc_method_handler(
+                    servicer.Detail,
+                    request_deserializer=protofiles_dot_result__pb2.DetailRequest.FromString,
+                    response_serializer=protofiles_dot_result__pb2.DetailResponse.SerializeToString,
+            ),
+            'DeleteAll': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeleteAll,
+                    request_deserializer=protofiles_dot_result__pb2.DeleteAllRequest.FromString,
+                    response_serializer=protofiles_dot_result__pb2.DeleteAllResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -95,6 +129,60 @@ class Result(object):
             '/src.v1.result.Result/Get',
             protofiles_dot_result__pb2.GetRequest.SerializeToString,
             protofiles_dot_result__pb2.GetResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def Detail(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/src.v1.result.Result/Detail',
+            protofiles_dot_result__pb2.DetailRequest.SerializeToString,
+            protofiles_dot_result__pb2.DetailResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def DeleteAll(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/src.v1.result.Result/DeleteAll',
+            protofiles_dot_result__pb2.DeleteAllRequest.SerializeToString,
+            protofiles_dot_result__pb2.DeleteAllResponse.FromString,
             options,
             channel_credentials,
             insecure,
