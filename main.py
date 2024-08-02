@@ -1,4 +1,5 @@
 import grpc
+
 from concurrent import futures
 from fastapi import FastAPI
 from src.v1.gateways.http import AppRoute
